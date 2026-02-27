@@ -21,7 +21,7 @@ public class TransactionType {
     @Column(name = "TR_DESCRIPTION", length = 50, nullable = false)
     private String trDescription;
 
-    @OneToMany(mappedBy = "transactionType", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "transactionType", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<TransactionTypeCategory> categories = new ArrayList<>();
 
     public TransactionType() {
