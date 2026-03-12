@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: data-migration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/carddemo
+    username: carddemo
+    password: carddemo
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 100
+    open-in-view: false
+
+logging:
+  level:
+    com.carddemo: INFO
+    org.hibernate.SQL: WARN

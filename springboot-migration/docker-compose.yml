@@ -1,0 +1,153 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: carddemo-postgres
+    environment:
+      POSTGRES_DB: carddemo
+      POSTGRES_USER: carddemo
+      POSTGRES_PASSWORD: carddemo
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U carddemo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis for session/cache
+  redis:
+    image: redis:7-alpine
+    container_name: carddemo-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Auth Service — ports COSGN00C, COUSR00C-03C
+  auth-service:
+    build:
+      context: .
+      dockerfile: auth-service/Dockerfile
+    container_name: carddemo-auth
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/carddemo
+      SPRING_DATASOURCE_USERNAME: carddemo
+      SPRING_DATASOURCE_PASSWORD: carddemo
+      JWT_SECRET: CardDemoSecretKeyForJWTTokenGenerationMustBeAtLeast256Bits
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # Account Service — ports COACTVWC, COACTUPC
+  account-service:
+    build:
+      context: .
+      dockerfile: account-service/Dockerfile
+    container_name: carddemo-account
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/carddemo
+      SPRING_DATASOURCE_USERNAME: carddemo
+      SPRING_DATASOURCE_PASSWORD: carddemo
+      JWT_SECRET: CardDemoSecretKeyForJWTTokenGenerationMustBeAtLeast256Bits
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # Card Service — ports COCRDLIC, COCRDSLC, COCRDUPC
+  card-service:
+    build:
+      context: .
+      dockerfile: card-service/Dockerfile
+    container_name: carddemo-card
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/carddemo
+      SPRING_DATASOURCE_USERNAME: carddemo
+      SPRING_DATASOURCE_PASSWORD: carddemo
+      JWT_SECRET: CardDemoSecretKeyForJWTTokenGenerationMustBeAtLeast256Bits
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # Transaction Service — ports COTRN00C-02C + batch jobs
+  transaction-service:
+    build:
+      context: .
+      dockerfile: transaction-service/Dockerfile
+    container_name: carddemo-transaction
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/carddemo
+      SPRING_DATASOURCE_USERNAME: carddemo
+      SPRING_DATASOURCE_PASSWORD: carddemo
+      JWT_SECRET: CardDemoSecretKeyForJWTTokenGenerationMustBeAtLeast256Bits
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # Billing Service — ports COBIL00C
+  billing-service:
+    build:
+      context: .
+      dockerfile: billing-service/Dockerfile
+    container_name: carddemo-billing
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/carddemo
+      SPRING_DATASOURCE_USERNAME: carddemo
+      SPRING_DATASOURCE_PASSWORD: carddemo
+      JWT_SECRET: CardDemoSecretKeyForJWTTokenGenerationMustBeAtLeast256Bits
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # Report Service — ports CORPT00C, CBSTM03A
+  report-service:
+    build:
+      context: .
+      dockerfile: report-service/Dockerfile
+    container_name: carddemo-report
+    ports:
+      - "8086:8086"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/carddemo
+      SPRING_DATASOURCE_USERNAME: carddemo
+      SPRING_DATASOURCE_PASSWORD: carddemo
+      JWT_SECRET: CardDemoSecretKeyForJWTTokenGenerationMustBeAtLeast256Bits
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # API Gateway — single entry point
+  api-gateway:
+    build:
+      context: .
+      dockerfile: api-gateway/Dockerfile
+    container_name: carddemo-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - auth-service
+      - account-service
+      - card-service
+      - transaction-service
+      - billing-service
+      - report-service
+
+volumes:
+  postgres-data:
