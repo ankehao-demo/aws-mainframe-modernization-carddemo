@@ -50,6 +50,8 @@ public class MigrationRunner implements CommandLineRunner {
                 path -> migrationService.migrateAccounts(path));
         migrateIfExists(basePath, "AWS00011.CARDDEMO.CARDDATA.PS", "cards",
                 path -> migrationService.migrateCards(path));
+        migrateIfExists(basePath, "AWS00011.CARDDEMO.CARDXREF.PS", "card cross-references",
+                path -> migrationService.migrateCardXref(path));
         migrateIfExists(basePath, "AWS00011.CARDDEMO.TRANSACT.PS", "transactions",
                 path -> migrationService.migrateTransactions(path));
 

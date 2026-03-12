@@ -23,6 +23,14 @@ spring:
           filters:
             - StripPrefix=0
 
+        # Card Service — cards by account route (must be before account-service to match first)
+        - id: card-service-by-account
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/accounts/*/cards
+          filters:
+            - StripPrefix=0
+
         # Account Service — ports COACTVWC/COACTUPC
         - id: account-service
           uri: http://localhost:8082
@@ -36,14 +44,6 @@ spring:
           uri: http://localhost:8083
           predicates:
             - Path=/api/cards/**
-          filters:
-            - StripPrefix=0
-
-        # Card Service — cards by account route
-        - id: card-service-by-account
-          uri: http://localhost:8083
-          predicates:
-            - Path=/api/accounts/*/cards
           filters:
             - StripPrefix=0
 

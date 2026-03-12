@@ -1,8 +1,10 @@
 package com.carddemo.report.batch;
 
 import com.carddemo.common.entity.Account;
+import com.carddemo.common.entity.Card;
 import com.carddemo.common.entity.Customer;
 import com.carddemo.common.entity.Transaction;
+import com.carddemo.common.repository.CardRepository;
 import com.carddemo.common.repository.CustomerRepository;
 import com.carddemo.common.repository.TransactionRepository;
 import jakarta.persistence.EntityManagerFactory;
@@ -39,6 +41,7 @@ import java.util.Map;
 public class StatementGenerationJobConfig {
 
     private final EntityManagerFactory entityManagerFactory;
+    private final CardRepository cardRepository;
     private final CustomerRepository customerRepository;
     private final TransactionRepository transactionRepository;
 
@@ -84,8 +87,12 @@ public class StatementGenerationJobConfig {
             statement.put("cycleDebits", account.getCurrCycDebit());
 
             LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
-            List<Transaction> recentTransactions = transactionRepository
-                    .findByTransactionTimestampBetween(thirtyDaysAgo, LocalDateTime.now());
+            List<String> cardNumbers = cardRepository.findByAccountId(account.getAccountId())
+                    .stream().map(Card::getCardNumber).toList();
+            List<Transaction> recentTransactions = cardNumbers.isEmpty()
+                    ? List.of()
+                    : transactionRepository.findByCardNumberInAndTransactionTimestampBetween(
+                            cardNumbers, thirtyDaysAgo, LocalDateTime.now());
 
             BigDecimal statementTotal = recentTransactions.stream()
                     .map(Transaction::getTransactionAmount)

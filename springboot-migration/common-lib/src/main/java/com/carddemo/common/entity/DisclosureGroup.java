@@ -40,8 +40,8 @@ public class DisclosureGroup {
 
     /** DIS-TRAN-CAT-CD PIC 9(04) */
     @Id
-    @Column(name = "transaction_category_code", nullable = false)
-    private Integer transactionCategoryCode;
+    @Column(name = "transaction_category_code", nullable = false, length = 4)
+    private String transactionCategoryCode;
 
     /** DIS-INT-RATE PIC S9(04)V99 */
     @Column(name = "interest_rate", precision = 6, scale = 2)
@@ -54,6 +54,6 @@ public class DisclosureGroup {
     public static class DisclosureGroupId implements Serializable {
         private String accountGroupId;
         private String transactionTypeCode;
-        private Integer transactionCategoryCode;
+        private String transactionCategoryCode;
     }
 }

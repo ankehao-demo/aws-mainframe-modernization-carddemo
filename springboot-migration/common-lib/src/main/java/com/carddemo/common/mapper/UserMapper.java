@@ -22,5 +22,6 @@ public interface UserMapper {
     @Mapping(target = "password", ignore = true)
     User toEntity(CreateUserRequest request);
 
+    @Mapping(target = "password", ignore = true)
     void updateEntityFromRequest(UpdateUserRequest request, @MappingTarget User user);
 }

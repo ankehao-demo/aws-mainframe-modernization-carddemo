@@ -36,8 +36,8 @@ public class DailyTransaction {
     private String transactionTypeCode;
 
     /** DALYTRAN-CAT-CD PIC 9(04) */
-    @Column(name = "transaction_category_code")
-    private Integer transactionCategoryCode;
+    @Column(name = "transaction_category_code", length = 4)
+    private String transactionCategoryCode;
 
     /** DALYTRAN-SOURCE PIC X(10) */
     @Column(name = "transaction_source", length = 10)
@@ -52,8 +52,8 @@ public class DailyTransaction {
     private BigDecimal transactionAmount;
 
     /** DALYTRAN-MERCHANT-ID PIC 9(09) */
-    @Column(name = "merchant_id")
-    private Long merchantId;
+    @Column(name = "merchant_id", length = 9)
+    private String merchantId;
 
     /** DALYTRAN-MERCHANT-NAME PIC X(50) */
     @Column(name = "merchant_name", length = 50)

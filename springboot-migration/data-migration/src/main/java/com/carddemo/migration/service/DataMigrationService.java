@@ -13,6 +13,7 @@ import com.carddemo.common.repository.UserRepository;
 import com.carddemo.migration.converter.EbcdicConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +43,7 @@ import java.time.format.DateTimeParseException;
 public class DataMigrationService {
 
     private final EbcdicConverter ebcdicConverter;
+    private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
     private final CardRepository cardRepository;
     private final CustomerRepository customerRepository;
@@ -153,6 +155,8 @@ public class DataMigrationService {
                     card.setExpirationDate(parseDate(
                             ebcdicConverter.ebcdicToString(record, 80, 10)));
                     card.setCardStatus(ebcdicConverter.ebcdicToString(record, 90, 1));
+                    // customerId will be set during CARDXREF migration
+                    card.setCustomerId(0L);
 
                     cardRepository.save(card);
                     count++;
@@ -176,7 +180,8 @@ public class DataMigrationService {
                 try {
                     User user = new User();
                     user.setUserId(ebcdicConverter.ebcdicToString(record, 0, 8));
-                    user.setPassword(ebcdicConverter.ebcdicToString(record, 8, 8));
+                    String rawPassword = ebcdicConverter.ebcdicToString(record, 8, 8).trim();
+                    user.setPassword(passwordEncoder.encode(rawPassword));
                     user.setFirstName(ebcdicConverter.ebcdicToString(record, 16, 20));
                     user.setLastName(ebcdicConverter.ebcdicToString(record, 36, 20));
                     user.setUserType(ebcdicConverter.ebcdicToString(record, 56, 1));
@@ -206,18 +211,16 @@ public class DataMigrationService {
                             ebcdicConverter.ebcdicToString(record, 0, 16));
                     transaction.setTransactionTypeCode(
                             ebcdicConverter.ebcdicToString(record, 16, 2));
-                    String catCode = ebcdicConverter.ebcdicToString(record, 18, 4).trim();
                     transaction.setTransactionCategoryCode(
-                            catCode.isEmpty() ? 0 : Integer.parseInt(catCode));
+                            ebcdicConverter.ebcdicToString(record, 18, 4));
                     transaction.setTransactionSource(
                             ebcdicConverter.ebcdicToString(record, 22, 10));
                     transaction.setTransactionDescription(
                             ebcdicConverter.ebcdicToString(record, 32, 100));
                     transaction.setTransactionAmount(
                             ebcdicConverter.comp3ToDecimal(record, 132, 6, 2));
-                    String merchantIdStr = ebcdicConverter.ebcdicToString(record, 138, 9).trim();
                     transaction.setMerchantId(
-                            merchantIdStr.isEmpty() ? 0L : Long.parseLong(merchantIdStr));
+                            ebcdicConverter.ebcdicToString(record, 138, 9));
                     transaction.setMerchantName(
                             ebcdicConverter.ebcdicToString(record, 147, 50));
                     transaction.setMerchantCity(
@@ -236,6 +239,41 @@ public class DataMigrationService {
             }
         }
         log.info("Migrated {} transactions", count);
+    }
+
+    /**
+     * Reads the CARDXREF file and updates existing Card entities with customerId.
+     * The CARDXREF VSAM file links card numbers to customer and account IDs.
+     * Record layout from CVACT03Y.cpy: CARD-XREF-RECORD (RECLN 50)
+     *   XREF-CARD-NUM  PIC X(16)  offset 0
+     *   XREF-CUST-ID   PIC 9(09)  offset 16
+     *   XREF-ACCT-ID   PIC 9(11)  offset 25
+     */
+    @Transactional
+    public void migrateCardXref(Path filePath) throws IOException {
+        log.info("Migrating card cross-references from: {}", filePath);
+        int recordLength = 50;
+        int count = 0;
+
+        try (RandomAccessFile raf = new RandomAccessFile(filePath.toFile(), "r")) {
+            byte[] record = new byte[recordLength];
+            while (raf.read(record) == recordLength) {
+                try {
+                    String cardNumber = ebcdicConverter.ebcdicToString(record, 0, 16).trim();
+                    String custIdStr = ebcdicConverter.ebcdicToString(record, 16, 9).trim();
+                    Long customerId = custIdStr.isEmpty() ? 0L : Long.parseLong(custIdStr);
+
+                    cardRepository.findById(cardNumber).ifPresent(card -> {
+                        card.setCustomerId(customerId);
+                        cardRepository.save(card);
+                    });
+                    count++;
+                } catch (Exception e) {
+                    log.warn("Skipping invalid card xref record: {}", e.getMessage());
+                }
+            }
+        }
+        log.info("Migrated {} card cross-references", count);
     }
 
     private LocalDate parseDate(String dateStr) {

@@ -40,8 +40,8 @@ public class CategoryBalance {
 
     /** TRANCAT-CD PIC 9(04) */
     @Id
-    @Column(name = "category_code", nullable = false)
-    private Integer categoryCode;
+    @Column(name = "category_code", nullable = false, length = 4)
+    private String categoryCode;
 
     /** TRAN-CAT-BAL PIC S9(09)V99 */
     @Column(name = "balance", precision = 11, scale = 2)
@@ -54,6 +54,6 @@ public class CategoryBalance {
     public static class CategoryBalanceId implements Serializable {
         private Long accountId;
         private String transactionTypeCode;
-        private Integer categoryCode;
+        private String categoryCode;
     }
 }

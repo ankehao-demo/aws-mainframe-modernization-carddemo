@@ -27,4 +27,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, String
             @Param("endDate") LocalDateTime endDate);
 
     List<Transaction> findByTransactionTimestampBetween(LocalDateTime start, LocalDateTime end);
+
+    List<Transaction> findByCardNumberInAndTransactionTimestampBetween(
+            List<String> cardNumbers, LocalDateTime start, LocalDateTime end);
 }

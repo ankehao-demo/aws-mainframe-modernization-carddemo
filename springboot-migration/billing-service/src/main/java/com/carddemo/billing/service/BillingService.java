@@ -63,7 +63,7 @@ public class BillingService {
         Transaction transaction = new Transaction();
         transaction.setTransactionId(transactionId);
         transaction.setTransactionTypeCode("PM");
-        transaction.setTransactionCategoryCode(1);
+        transaction.setTransactionCategoryCode("0001");
         transaction.setTransactionSource("ONLINE");
         transaction.setTransactionDescription("Bill Payment");
         transaction.setTransactionAmount(request.getPaymentAmount().negate());

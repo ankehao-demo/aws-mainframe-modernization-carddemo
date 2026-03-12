@@ -24,7 +24,7 @@ public class TransactionDto {
     private String transactionTypeCode;
 
     @JsonProperty("transaction_category_code")
-    private Integer transactionCategoryCode;
+    private String transactionCategoryCode;
 
     @JsonProperty("transaction_source")
     private String transactionSource;
@@ -36,7 +36,7 @@ public class TransactionDto {
     private BigDecimal transactionAmount;
 
     @JsonProperty("merchant_id")
-    private Long merchantId;
+    private String merchantId;
 
     @JsonProperty("merchant_name")
     private String merchantName;

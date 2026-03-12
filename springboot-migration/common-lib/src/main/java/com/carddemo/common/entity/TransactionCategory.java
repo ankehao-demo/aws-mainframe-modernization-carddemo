@@ -34,8 +34,8 @@ public class TransactionCategory {
 
     /** TRAN-CAT-CD PIC 9(04) */
     @Id
-    @Column(name = "category_code", nullable = false)
-    private Integer categoryCode;
+    @Column(name = "category_code", nullable = false, length = 4)
+    private String categoryCode;
 
     /** TRAN-CAT-TYPE-DESC PIC X(50) */
     @Column(name = "description", length = 50)
@@ -47,6 +47,6 @@ public class TransactionCategory {
     @AllArgsConstructor
     public static class TransactionCategoryId implements Serializable {
         private String transactionTypeCode;
-        private Integer categoryCode;
+        private String categoryCode;
     }
 }
