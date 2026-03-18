@@ -13,6 +13,6 @@ import java.util.Optional;
 public interface TransactionRepository extends JpaRepository<Transaction, String> {
     Page<Transaction> findByTranCardNum(String tranCardNum, Pageable pageable);
 
-    @Query("SELECT t.tranId FROM Transaction t ORDER BY t.tranId DESC LIMIT 1")
+    @Query("SELECT MAX(t.tranId) FROM Transaction t")
     Optional<String> findMaxTranId();
 }

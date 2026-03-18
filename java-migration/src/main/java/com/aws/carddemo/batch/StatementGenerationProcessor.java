@@ -31,7 +31,7 @@ public class StatementGenerationProcessor implements ItemProcessor<Account, Acco
     public StatementGenerationProcessor(CardXrefRepository cardXrefRepository,
                                         CustomerRepository customerRepository,
                                         TransactionRepository transactionRepository,
-                                        @Value("${app.batch.output-directory}") String outputDirectory) {
+                                        @Value("${app.batch.output-dir}") String outputDirectory) {
         this.cardXrefRepository = cardXrefRepository;
         this.customerRepository = customerRepository;
         this.transactionRepository = transactionRepository;

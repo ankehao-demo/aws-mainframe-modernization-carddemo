@@ -64,13 +64,28 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public Binding authReplyBinding(Queue authReplyQueue, DirectExchange exchange) {
+        return BindingBuilder.bind(authReplyQueue).to(exchange).with(AUTH_REPLY_QUEUE);
+    }
+
+    @Bean
     public Binding accountInquiryBinding(Queue accountInquiryQueue, DirectExchange exchange) {
         return BindingBuilder.bind(accountInquiryQueue).to(exchange).with(ACCOUNT_INQUIRY_QUEUE);
     }
 
     @Bean
+    public Binding accountReplyBinding(Queue accountReplyQueue, DirectExchange exchange) {
+        return BindingBuilder.bind(accountReplyQueue).to(exchange).with(ACCOUNT_REPLY_QUEUE);
+    }
+
+    @Bean
     public Binding dateInquiryBinding(Queue dateInquiryQueue, DirectExchange exchange) {
         return BindingBuilder.bind(dateInquiryQueue).to(exchange).with(DATE_INQUIRY_QUEUE);
+    }
+
+    @Bean
+    public Binding dateReplyBinding(Queue dateReplyQueue, DirectExchange exchange) {
+        return BindingBuilder.bind(dateReplyQueue).to(exchange).with(DATE_REPLY_QUEUE);
     }
 
     @Bean

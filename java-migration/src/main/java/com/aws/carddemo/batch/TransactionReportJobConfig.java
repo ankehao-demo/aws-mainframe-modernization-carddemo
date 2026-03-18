@@ -30,7 +30,7 @@ public class TransactionReportJobConfig {
     public TransactionReportJobConfig(JobRepository jobRepository,
                                       PlatformTransactionManager transactionManager,
                                       EntityManagerFactory entityManagerFactory,
-                                      @Value("${app.batch.output-directory}") String outputDirectory) {
+                                      @Value("${app.batch.output-dir}") String outputDirectory) {
         this.jobRepository = jobRepository;
         this.transactionManager = transactionManager;
         this.entityManagerFactory = entityManagerFactory;

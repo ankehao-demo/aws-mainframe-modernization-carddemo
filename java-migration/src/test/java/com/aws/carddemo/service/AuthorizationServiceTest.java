@@ -129,6 +129,6 @@ class AuthorizationServiceTest {
     void markFraud_success() {
         when(authFraudRepository.save(any())).thenAnswer(i -> i.getArgument(0));
 
-        authorizationService.markFraud("1234567890123456", "TRAN001");
+        authorizationService.markFraud("1234567890123456", "TRAN001", "MERCH001");
     }
 }

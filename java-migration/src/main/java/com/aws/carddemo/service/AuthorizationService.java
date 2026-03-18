@@ -68,9 +68,11 @@ public class AuthorizationService {
                     return pendingAuthSummaryRepository.save(newSummary);
                 });
 
-        // Make approval/decline decision
-        BigDecimal totalAuthAmount = summary.getPaApprovedAmount().add(request.getAmount());
-        boolean approved = totalAuthAmount.compareTo(account.getAcctCreditLimit()) <= 0;
+        // Make approval/decline decision (include current balance + pending auths + new request)
+        BigDecimal totalExposure = account.getAcctCurrBal()
+                .add(summary.getPaApprovedAmount())
+                .add(request.getAmount());
+        boolean approved = totalExposure.compareTo(account.getAcctCreditLimit()) <= 0;
 
         String authId = UUID.randomUUID().toString().substring(0, 16);
         LocalDateTime now = LocalDateTime.now();
@@ -114,10 +116,11 @@ public class AuthorizationService {
     }
 
     @Transactional
-    public void markFraud(String cardNum, String tranId) {
+    public void markFraud(String cardNum, String tranId, String merchantId) {
         AuthFraud fraud = AuthFraud.builder()
                 .afCardNum(cardNum)
                 .afTranId(tranId)
+                .afMerchantId(merchantId)
                 .afFraudDate(LocalDateTime.now())
                 .afFraudType("MANUAL")
                 .afNotes("Marked as fraud by administrator")

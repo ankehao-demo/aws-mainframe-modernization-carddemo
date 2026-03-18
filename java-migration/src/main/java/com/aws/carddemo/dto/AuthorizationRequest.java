@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 @Builder
 public class AuthorizationRequest {
     private String cardNum;
+    private String tranId;
     private BigDecimal amount;
     private String merchantId;
     private String merchantName;

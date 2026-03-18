@@ -27,7 +27,7 @@ public class AuthorizationController {
 
     @PostMapping("/fraud")
     public ResponseEntity<Void> markFraud(@RequestBody AuthorizationRequest request) {
-        authorizationService.markFraud(request.getCardNum(), request.getMerchantId());
+        authorizationService.markFraud(request.getCardNum(), request.getTranId(), request.getMerchantId());
         return ResponseEntity.ok().build();
     }
 }
