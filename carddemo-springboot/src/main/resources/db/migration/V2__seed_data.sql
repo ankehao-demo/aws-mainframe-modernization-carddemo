@@ -48,14 +48,14 @@ INSERT INTO customer (cust_id, first_name, middle_name, last_name, addr_line_1, 
 
 -- Card data (from carddata.txt - CVACT02Y)
 -- Format: card_num X(16), acct_id 9(11), cvv 9(03), embossed_name X(50), exp_date X(10), status X(01)
-INSERT INTO card (card_num, acct_id, cvv_cd, embossed_name, expiration_date, active_status) VALUES ('0500024453765740', '00000000050', '747', 'Aniya Von', '2023-03-09', 'Y');
-INSERT INTO card (card_num, acct_id, cvv_cd, embossed_name, expiration_date, active_status) VALUES ('0683586198171516', '00000000027', '567', 'Ward Jones', '2025-07-13', 'Y');
+INSERT INTO card (card_num, acct_id, cvv_cd, embossed_name, expiration_date, active_status) VALUES ('0500024453765740', '00000000005', '747', 'Aniya Von', '2023-03-09', 'Y');
+INSERT INTO card (card_num, acct_id, cvv_cd, embossed_name, expiration_date, active_status) VALUES ('0683586198171516', '00000000002', '567', 'Ward Jones', '2025-07-13', 'Y');
 INSERT INTO card (card_num, acct_id, cvv_cd, embossed_name, expiration_date, active_status) VALUES ('0923877193247330', '00000000002', '028', 'Enrico Rosenbaum', '2024-08-11', 'Y');
 
 -- Card cross-reference data (from cardxref.txt - CVACT03Y)
 -- Format: card_num X(16), cust_id 9(09), acct_id 9(11)
-INSERT INTO card_cross_ref (card_num, cust_id, acct_id) VALUES ('0500024453765740', '000000005', '00000000050');
-INSERT INTO card_cross_ref (card_num, cust_id, acct_id) VALUES ('0683586198171516', '000000002', '00000000027');
+INSERT INTO card_cross_ref (card_num, cust_id, acct_id) VALUES ('0500024453765740', '000000005', '00000000005');
+INSERT INTO card_cross_ref (card_num, cust_id, acct_id) VALUES ('0683586198171516', '000000002', '00000000002');
 INSERT INTO card_cross_ref (card_num, cust_id, acct_id) VALUES ('0923877193247330', '000000002', '00000000002');
 
 -- Disclosure group data (from discgrp.txt - CVTRA02Y)

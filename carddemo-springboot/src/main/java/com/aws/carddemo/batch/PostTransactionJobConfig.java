@@ -150,7 +150,7 @@ public class PostTransactionJobConfig {
                 if (tran.getAmount().compareTo(BigDecimal.ZERO) >= 0) {
                     account.setCurrCycCredit(account.getCurrCycCredit().add(tran.getAmount()));
                 } else {
-                    account.setCurrCycDebit(account.getCurrCycDebit().add(tran.getAmount()));
+                    account.setCurrCycDebit(account.getCurrCycDebit().add(tran.getAmount().negate()));
                 }
                 accountRepository.save(account);
 

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 /**
@@ -45,7 +46,7 @@ public class AuthorizationProcessingService {
     public PendingAuthSummary processAuthorization(String cardNum, BigDecimal amount,
                                                      String merchantId, String merchantName) {
         LocalDateTime now = LocalDateTime.now();
-        String authId = String.format("AUTH%012d", now.toLocalDate().toEpochDay() * 100000 + now.getNano() / 1000);
+        String authId = "AUTH" + now.format(DateTimeFormatter.ofPattern("yyMMddHHmmss"));
         if (authId.length() > 16) authId = authId.substring(0, 16);
 
         PendingAuthSummary summary = new PendingAuthSummary();

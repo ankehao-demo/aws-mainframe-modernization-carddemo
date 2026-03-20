@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 /**
  * Transaction management — mirrors COTRN00C.cbl (list), COTRN01C.cbl (view), COTRN02C.cbl (add).
@@ -48,7 +48,7 @@ public class TransactionService {
     @Transactional
     public DailyTransaction addTransaction(TransactionRequest request) {
         LocalDateTime now = LocalDateTime.now();
-        String tranId = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")).substring(0, 16);
+        String tranId = UUID.randomUUID().toString().replace("-", "").substring(0, 16);
 
         DailyTransaction dt = new DailyTransaction();
         dt.setTranId(tranId);
