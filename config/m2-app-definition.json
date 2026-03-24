@@ -1,0 +1,274 @@
+{
+  "template-version": "2.0",
+  "source-locations": [
+    {
+      "source-id": "s3-source",
+      "source-type": "s3",
+      "attributes": {
+        "s3-bucket": "${M2_S3_BUCKET}",
+        "s3-key-prefix": "carddemo"
+      }
+    }
+  ],
+  "definition": {
+    "listeners": [
+      {
+        "port": 6000,
+        "type": "tn3270"
+      }
+    ],
+    "ba-application": {
+      "app-location": "${s3-source}/app/cbl",
+      "share-location": "${s3-source}/app/cpy"
+    },
+    "batch-settings": {
+      "initiators": [
+        {
+          "classes": ["A", "B"],
+          "description": "Batch initiator for CardDemo batch jobs"
+        }
+      ],
+      "jcl-file-location": "${s3-source}/app/jcl"
+    },
+    "cics-settings": {
+      "binary-file-location": "${s3-source}/loadlib",
+      "csd-file-location": "${s3-source}/app/csd",
+      "system-initialization-table": {
+        "cwa-size": 0,
+        "region-name": "CARDDEMO",
+        "sit-parameters": "SIT=6$"
+      }
+    },
+    "datasets": [
+      {
+        "dataset-name": "AWS.M2.CARDDEMO.ACCTDATA.VSAM.KSDS",
+        "relative-path": "data/ACCTDATA.VSAM.KSDS",
+        "dataset-org": {
+          "vsam": {
+            "format": "KS",
+            "encoding": "A",
+            "primary-key": {
+              "length": 11,
+              "offset": 0
+            },
+            "record-length": {
+              "min": 300,
+              "max": 300
+            }
+          }
+        }
+      },
+      {
+        "dataset-name": "AWS.M2.CARDDEMO.CARDDATA.VSAM.KSDS",
+        "relative-path": "data/CARDDATA.VSAM.KSDS",
+        "dataset-org": {
+          "vsam": {
+            "format": "KS",
+            "encoding": "A",
+            "primary-key": {
+              "length": 16,
+              "offset": 0
+            },
+            "record-length": {
+              "min": 150,
+              "max": 150
+            }
+          }
+        }
+      },
+      {
+        "dataset-name": "AWS.M2.CARDDEMO.CUSTDATA.VSAM.KSDS",
+        "relative-path": "data/CUSTDATA.VSAM.KSDS",
+        "dataset-org": {
+          "vsam": {
+            "format": "KS",
+            "encoding": "A",
+            "primary-key": {
+              "length": 9,
+              "offset": 0
+            },
+            "record-length": {
+              "min": 500,
+              "max": 500
+            }
+          }
+        }
+      },
+      {
+        "dataset-name": "AWS.M2.CARDDEMO.CARDXREF.VSAM.KSDS",
+        "relative-path": "data/CARDXREF.VSAM.KSDS",
+        "dataset-org": {
+          "vsam": {
+            "format": "KS",
+            "encoding": "A",
+            "primary-key": {
+              "length": 16,
+              "offset": 0
+            },
+            "record-length": {
+              "min": 50,
+              "max": 50
+            }
+          }
+        }
+      },
+      {
+        "dataset-name": "AWS.M2.CARDDEMO.TRANSACT.VSAM.KSDS",
+        "relative-path": "data/TRANSACT.VSAM.KSDS",
+        "dataset-org": {
+          "vsam": {
+            "format": "KS",
+            "encoding": "A",
+            "primary-key": {
+              "length": 16,
+              "offset": 0
+            },
+            "record-length": {
+              "min": 350,
+              "max": 350
+            }
+          }
+        }
+      },
+      {
+        "dataset-name": "AWS.M2.CARDDEMO.USRSEC.VSAM.KSDS",
+        "relative-path": "data/USRSEC.VSAM.KSDS",
+        "dataset-org": {
+          "vsam": {
+            "format": "KS",
+            "encoding": "A",
+            "primary-key": {
+              "length": 8,
+              "offset": 0
+            },
+            "record-length": {
+              "min": 80,
+              "max": 80
+            }
+          }
+        }
+      },
+      {
+        "dataset-name": "AWS.M2.CARDDEMO.TCATBALF.VSAM.KSDS",
+        "relative-path": "data/TCATBALF.VSAM.KSDS",
+        "dataset-org": {
+          "vsam": {
+            "format": "KS",
+            "encoding": "A"
+          }
+        }
+      },
+      {
+        "dataset-name": "AWS.M2.CARDDEMO.DISCGRP.VSAM.KSDS",
+        "relative-path": "data/DISCGRP.VSAM.KSDS",
+        "dataset-org": {
+          "vsam": {
+            "format": "KS",
+            "encoding": "A"
+          }
+        }
+      },
+      {
+        "dataset-name": "AWS.M2.CARDDEMO.TRANTYPE.VSAM.KSDS",
+        "relative-path": "data/TRANTYPE.VSAM.KSDS",
+        "dataset-org": {
+          "vsam": {
+            "format": "KS",
+            "encoding": "A"
+          }
+        }
+      },
+      {
+        "dataset-name": "AWS.M2.CARDDEMO.TRANCATG.VSAM.KSDS",
+        "relative-path": "data/TRANCATG.VSAM.KSDS",
+        "dataset-org": {
+          "vsam": {
+            "format": "KS",
+            "encoding": "A"
+          }
+        }
+      },
+      {
+        "dataset-name": "AWS.M2.CARDDEMO.CARDDATA.VSAM.AIX.PATH",
+        "relative-path": "data/CARDDATA.VSAM.AIX.PATH",
+        "dataset-org": {
+          "vsam": {
+            "format": "KS",
+            "encoding": "A"
+          }
+        }
+      },
+      {
+        "dataset-name": "AWS.M2.CARDDEMO.CARDXREF.VSAM.AIX.PATH",
+        "relative-path": "data/CARDXREF.VSAM.AIX.PATH",
+        "dataset-org": {
+          "vsam": {
+            "format": "KS",
+            "encoding": "A"
+          }
+        }
+      },
+      {
+        "dataset-name": "AWS.M2.CARDDEMO.DALYTRAN.PS",
+        "relative-path": "data/DALYTRAN.PS",
+        "dataset-org": {
+          "ps": {
+            "format": "FB",
+            "encoding": "A",
+            "record-length": 350
+          }
+        }
+      },
+      {
+        "dataset-name": "AWS.M2.CARDDEMO.LOADLIB",
+        "relative-path": "loadlib",
+        "dataset-org": {
+          "po": {
+            "format": "U",
+            "encoding": "A"
+          }
+        }
+      }
+    ],
+    "batch-job-definitions": [
+      {
+        "job-name": "POSTTRAN",
+        "description": "Post daily transactions and update master files",
+        "jcl-member": "POSTTRAN.jcl",
+        "program": "CBTRN02C",
+        "datasets-used": [
+          "AWS.M2.CARDDEMO.TRANSACT.VSAM.KSDS",
+          "AWS.M2.CARDDEMO.DALYTRAN.PS",
+          "AWS.M2.CARDDEMO.CARDXREF.VSAM.KSDS",
+          "AWS.M2.CARDDEMO.ACCTDATA.VSAM.KSDS",
+          "AWS.M2.CARDDEMO.TCATBALF.VSAM.KSDS"
+        ]
+      },
+      {
+        "job-name": "INTCALC",
+        "description": "Calculate interest on account balances",
+        "jcl-member": "INTCALC.jcl",
+        "program": "CBACT04C",
+        "datasets-used": [
+          "AWS.M2.CARDDEMO.TCATBALF.VSAM.KSDS",
+          "AWS.M2.CARDDEMO.CARDXREF.VSAM.KSDS",
+          "AWS.M2.CARDDEMO.CARDXREF.VSAM.AIX.PATH",
+          "AWS.M2.CARDDEMO.ACCTDATA.VSAM.KSDS",
+          "AWS.M2.CARDDEMO.DISCGRP.VSAM.KSDS"
+        ]
+      },
+      {
+        "job-name": "CREASTMT",
+        "description": "Generate account statements in text and HTML format",
+        "jcl-member": "CREASTMT.JCL",
+        "program": "CBSTM03A",
+        "datasets-used": [
+          "AWS.M2.CARDDEMO.TRANSACT.VSAM.KSDS",
+          "AWS.M2.CARDDEMO.CARDXREF.VSAM.KSDS",
+          "AWS.M2.CARDDEMO.ACCTDATA.VSAM.KSDS",
+          "AWS.M2.CARDDEMO.CUSTDATA.VSAM.KSDS"
+        ]
+      }
+    ]
+  }
+}
