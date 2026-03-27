@@ -61,5 +61,5 @@ spring:
 # JWT Configuration
 app:
   jwt:
-    secret: ${JWT_SECRET}
+    secret: ${JWT_SECRET:dev-only-jwt-secret-key-must-be-at-least-256-bits-long-for-hmac-sha}
     expiration-ms: 3600000

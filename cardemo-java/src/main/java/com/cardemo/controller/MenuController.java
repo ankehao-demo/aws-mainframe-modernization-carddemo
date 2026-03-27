@@ -5,6 +5,7 @@ import com.cardemo.dto.MenuResponse.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,6 +54,7 @@ public class MenuController {
     }
 
     @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MenuResponse> getAdminMenu() {
         return ResponseEntity.ok(buildAdminMenu());
     }
