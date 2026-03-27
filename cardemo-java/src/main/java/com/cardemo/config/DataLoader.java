@@ -4,11 +4,13 @@ import com.cardemo.entity.Account;
 import com.cardemo.entity.Card;
 import com.cardemo.entity.CardXref;
 import com.cardemo.entity.Customer;
+import com.cardemo.entity.Transaction;
 import com.cardemo.entity.UserSecurity;
 import com.cardemo.repository.AccountRepository;
 import com.cardemo.repository.CardRepository;
 import com.cardemo.repository.CardXrefRepository;
 import com.cardemo.repository.CustomerRepository;
+import com.cardemo.repository.TransactionRepository;
 import com.cardemo.repository.UserSecurityRepository;
 import java.math.BigDecimal;
 import org.springframework.boot.CommandLineRunner;
@@ -29,6 +31,7 @@ public class DataLoader implements CommandLineRunner {
     private final CardRepository cardRepository;
     private final CardXrefRepository cardXrefRepository;
     private final CustomerRepository customerRepository;
+    private final TransactionRepository transactionRepository;
     private final PasswordEncoder passwordEncoder;
 
     public DataLoader(UserSecurityRepository userSecurityRepository,
@@ -36,12 +39,14 @@ public class DataLoader implements CommandLineRunner {
                       CardRepository cardRepository,
                       CardXrefRepository cardXrefRepository,
                       CustomerRepository customerRepository,
+                      TransactionRepository transactionRepository,
                       PasswordEncoder passwordEncoder) {
         this.userSecurityRepository = userSecurityRepository;
         this.accountRepository = accountRepository;
         this.cardRepository = cardRepository;
         this.cardXrefRepository = cardXrefRepository;
         this.customerRepository = customerRepository;
+        this.transactionRepository = transactionRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -56,6 +61,7 @@ public class DataLoader implements CommandLineRunner {
         seedAccounts();
         seedCards();
         seedCardXrefs();
+        seedTransactions();
     }
 
     private void seedUsers() {
@@ -174,5 +180,55 @@ public class DataLoader implements CommandLineRunner {
         xref2.setCustId(1000000002L);
         xref2.setAcctId(10000000002L);
         cardXrefRepository.save(xref2);
+    }
+
+    private void seedTransactions() {
+        Transaction t1 = new Transaction();
+        t1.setTranId("0000000000000001");
+        t1.setTypeCd("SA");
+        t1.setCategoryCd(5001);
+        t1.setSource("ONLINE");
+        t1.setDescription("Amazon Purchase");
+        t1.setAmount(new BigDecimal("125.50"));
+        t1.setMerchantId(100000001L);
+        t1.setMerchantName("Amazon.com");
+        t1.setMerchantCity("Seattle");
+        t1.setMerchantZip("98101");
+        t1.setCardNum("4111111111111111");
+        t1.setOriginTimestamp("2024-01-15-10.30.00.000000");
+        t1.setProcessedTimestamp("2024-01-15-10.30.05.000000");
+        transactionRepository.save(t1);
+
+        Transaction t2 = new Transaction();
+        t2.setTranId("0000000000000002");
+        t2.setTypeCd("SA");
+        t2.setCategoryCd(5411);
+        t2.setSource("POS");
+        t2.setDescription("Grocery Store Purchase");
+        t2.setAmount(new BigDecimal("67.89"));
+        t2.setMerchantId(100000002L);
+        t2.setMerchantName("Whole Foods Market");
+        t2.setMerchantCity("New York");
+        t2.setMerchantZip("10001");
+        t2.setCardNum("4111111111111111");
+        t2.setOriginTimestamp("2024-01-16-14.15.00.000000");
+        t2.setProcessedTimestamp("2024-01-16-14.15.03.000000");
+        transactionRepository.save(t2);
+
+        Transaction t3 = new Transaction();
+        t3.setTranId("0000000000000003");
+        t3.setTypeCd("CR");
+        t3.setCategoryCd(6011);
+        t3.setSource("ATM");
+        t3.setDescription("ATM Cash Withdrawal");
+        t3.setAmount(new BigDecimal("-200.00"));
+        t3.setMerchantId(100000003L);
+        t3.setMerchantName("Chase Bank ATM");
+        t3.setMerchantCity("Los Angeles");
+        t3.setMerchantZip("90210");
+        t3.setCardNum("4222222222222222");
+        t3.setOriginTimestamp("2024-02-01-09.00.00.000000");
+        t3.setProcessedTimestamp("2024-02-01-09.00.02.000000");
+        transactionRepository.save(t3);
     }
 }
