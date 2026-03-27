@@ -1,0 +1,4 @@
+app:
+  jwt:
+    secret: test-only-jwt-secret-key-must-be-at-least-256-bits-long-for-hmac-sha
+    expiration-ms: 3600000
