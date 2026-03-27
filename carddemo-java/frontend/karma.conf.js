@@ -1,5 +1,5 @@
 // Karma configuration file
-process.env.CHROME_BIN = process.env.CHROME_BIN || '/opt/.devin/chrome/chrome/linux-133.0.6943.126/chrome-linux64/chrome';
+// CHROME_BIN can be set externally; karma-chrome-launcher auto-detects if unset
 
 module.exports = function (config) {
   config.set({
