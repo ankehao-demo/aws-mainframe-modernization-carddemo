@@ -502,8 +502,10 @@
                     DELIMITED BY SIZE
                     INTO ACSTSSNO OF CACTVWAO
                 END-STRING                                                      
-                MOVE CUST-FICO-CREDIT-SCORE                                     
-                                          TO ACSTFCOO OF CACTVWAO               
+                 MOVE CUST-FICO-CREDIT-SCORE                                     
+                                          TO ACSTFCOO OF CACTVWAO
+                MOVE CUST-EXPERIAN-CREDIT-SCORE
+                                          TO ACSTEXPO OF CACTVWAO
                 MOVE CUST-DOB-YYYY-MM-DD  TO ACSTDOBO OF CACTVWAO               
                 MOVE CUST-FIRST-NAME      TO ACSFNAMO OF CACTVWAO               
                 MOVE CUST-MIDDLE-NAME     TO ACSMNAMO OF CACTVWAO               

@@ -232,6 +232,10 @@
                88  FLG-FICO-SCORE-ISVALID          VALUE LOW-VALUES.
                88  FLG-FICO-SCORE-NOT-OK           VALUE '0'.
                88  FLG-FICO-SCORE-BLANK            VALUE 'B'.
+           10  WS-EDIT-EXPERIAN-SCORE-FLGS          PIC  X(1).
+               88  FLG-EXPERIAN-SCORE-ISVALID       VALUE LOW-VALUES.
+               88  FLG-EXPERIAN-SCORE-NOT-OK        VALUE '0'.
+               88  FLG-EXPERIAN-SCORE-BLANK         VALUE 'B'.
            10 WS-EDIT-OPEN-DATE-FLGS.
                88 WS-EDIT-OPEN-DATE-IS-INVALID     VALUE '000'.
                20 WS-EDIT-OPEN-YEAR-FLG            PIC X(01).
@@ -453,7 +457,8 @@
                15  CUST-UPDATE-EFT-ACCOUNT-ID          PIC X(10).
                15  CUST-UPDATE-PRI-CARD-IND            PIC X(01).
                15  CUST-UPDATE-FICO-CREDIT-SCORE       PIC 9(03).
-               15  FILLER                              PIC X(168).
+               15  CUST-UPDATE-EXPERIAN-CREDIT-SCORE   PIC 9(03).
+               15  FILLER                              PIC X(165).
 
 
       ******************************************************************
@@ -754,6 +759,9 @@
                 15  ACUP-OLD-CUST-FICO-SCORE-X         PIC X(03).
                 15  ACUP-OLD-CUST-FICO-SCORE           REDEFINES
                     ACUP-OLD-CUST-FICO-SCORE-X         PIC 9(03).
+                15  ACUP-OLD-CUST-EXPERIAN-SCORE-X     PIC X(03).
+                15  ACUP-OLD-CUST-EXPERIAN-SCORE       REDEFINES
+                    ACUP-OLD-CUST-EXPERIAN-SCORE-X     PIC 9(03).
           05 ACUP-NEW-DETAILS.
              10 ACUP-NEW-ACCT-DATA.
                 15  ACUP-NEW-ACCT-ID-X                 PIC X(11).
@@ -846,6 +854,11 @@
                 15  ACUP-NEW-CUST-FICO-SCORE           REDEFINES
                     ACUP-NEW-CUST-FICO-SCORE-X         PIC 9(03).
                     88 FICO-RANGE-IS-VALID             VALUES 300
+                                                       THROUGH 850.
+                15  ACUP-NEW-CUST-EXPERIAN-SCORE-X     PIC X(03).
+                15  ACUP-NEW-CUST-EXPERIAN-SCORE       REDEFINES
+                    ACUP-NEW-CUST-EXPERIAN-SCORE-X     PIC 9(03).
+                    88 EXPERIAN-RANGE-IS-VALID         VALUES 300
                                                        THROUGH 850.
        01  WS-COMMAREA                                 PIC X(2000).
 
@@ -1283,6 +1296,16 @@
                MOVE ACSTFCOI OF CACTUPAI TO ACUP-NEW-CUST-FICO-SCORE-X
            END-IF
       *
+      *Experian
+      *
+           IF  ACSTEXPI OF CACTUPAI = '*'
+           OR  ACSTEXPI OF CACTUPAI = SPACES
+               MOVE LOW-VALUES           TO ACUP-NEW-CUST-EXPERIAN-SCORE-X
+           ELSE
+               MOVE ACSTEXPI OF CACTUPAI
+                                         TO ACUP-NEW-CUST-EXPERIAN-SCORE-X
+           END-IF
+      *
       *First Name
       *
            IF  ACSFNAMI OF CACTUPAI = '*'
@@ -1554,6 +1577,19 @@
               PERFORM  1275-EDIT-FICO-SCORE
                  THRU  1275-EDIT-FICO-SCORE-EXIT
            END-IF
+
+           MOVE 'Experian Score'          TO WS-EDIT-VARIABLE-NAME
+           MOVE ACUP-NEW-CUST-EXPERIAN-SCORE-X
+                                         TO WS-EDIT-ALPHANUM-ONLY
+           MOVE 3                        TO WS-EDIT-ALPHANUM-LENGTH
+           PERFORM 1245-EDIT-NUM-REQD
+              THRU 1245-EDIT-NUM-REQD-EXIT
+           MOVE WS-EDIT-ALPHANUM-ONLY-FLAGS
+                                         TO WS-EDIT-EXPERIAN-SCORE-FLGS
+           IF FLG-EXPERIAN-SCORE-ISVALID
+              PERFORM  1276-EDIT-EXPERIAN-SCORE
+                 THRU  1276-EDIT-EXPERIAN-SCORE-EXIT
+           END-IF
       ******************************************************************
       *    Edit names
       ******************************************************************
@@ -1766,6 +1802,8 @@
                FUNCTION TRIM (ACUP-OLD-CUST-PRI-HOLDER-IND))
            AND ACUP-NEW-CUST-FICO-SCORE-X
                                      = ACUP-OLD-CUST-FICO-SCORE-X
+           AND ACUP-NEW-CUST-EXPERIAN-SCORE-X
+                                     = ACUP-OLD-CUST-EXPERIAN-SCORE-X
                SET NO-CHANGES-DETECTED   TO TRUE
            ELSE
                SET CHANGE-HAS-OCCURRED   TO TRUE
@@ -2531,6 +2569,26 @@
        1275-EDIT-FICO-SCORE-EXIT.
            EXIT
            .
+       1276-EDIT-EXPERIAN-SCORE.
+           IF EXPERIAN-RANGE-IS-VALID
+               CONTINUE
+           ELSE
+              SET INPUT-ERROR              TO TRUE
+              SET FLG-EXPERIAN-SCORE-NOT-OK TO TRUE
+              IF WS-RETURN-MSG-OFF
+                 STRING
+                   FUNCTION TRIM(WS-EDIT-VARIABLE-NAME)
+                   ': should be between 300 and 850'
+                   DELIMITED BY SIZE
+                   INTO WS-RETURN-MSG
+                 END-STRING
+              END-IF
+              GO TO  1276-EDIT-EXPERIAN-SCORE-EXIT
+           END-IF
+           .
+       1276-EDIT-EXPERIAN-SCORE-EXIT.
+           EXIT
+           .
 
       *A crude zip code edit based on data from USPS web site
        1280-EDIT-US-STATE-ZIP-CD.
@@ -2753,6 +2811,7 @@
                                                    ACTSSN2O OF CACTUPAO
                                                    ACTSSN3O OF CACTUPAO
                                                    ACSTFCOO OF CACTUPAO
+                                                   ACSTEXPO OF CACTUPAO
                                                    DOBYEARO OF CACTUPAO
                                                    DOBMONO  OF CACTUPAO
                                                    DOBDAYO  OF CACTUPAO
@@ -2830,6 +2889,8 @@
               MOVE ACUP-OLD-CUST-SSN-X(4:2)    TO ACTSSN2O OF CACTUPAO
               MOVE ACUP-OLD-CUST-SSN-X(6:4)    TO ACTSSN3O OF CACTUPAO
               MOVE ACUP-OLD-CUST-FICO-SCORE-X  TO ACSTFCOO OF CACTUPAO
+              MOVE ACUP-OLD-CUST-EXPERIAN-SCORE-X
+                                               TO ACSTEXPO OF CACTUPAO
               MOVE ACUP-OLD-CUST-DOB-YEAR      TO DOBYEARO OF CACTUPAO
               MOVE ACUP-OLD-CUST-DOB-MON       TO DOBMONO  OF CACTUPAO
               MOVE ACUP-OLD-CUST-DOB-DAY       TO DOBDAYO  OF CACTUPAO
@@ -2924,6 +2985,7 @@
            MOVE ACUP-NEW-CUST-SSN-2            TO ACTSSN2O OF CACTUPAO
            MOVE ACUP-NEW-CUST-SSN-3            TO ACTSSN3O OF CACTUPAO
            MOVE ACUP-NEW-CUST-FICO-SCORE-X     TO ACSTFCOO OF CACTUPAO
+           MOVE ACUP-NEW-CUST-EXPERIAN-SCORE-X TO ACSTEXPO OF CACTUPAO
            MOVE ACUP-NEW-CUST-DOB-YEAR         TO DOBYEARO OF CACTUPAO
            MOVE ACUP-NEW-CUST-DOB-MON          TO DOBMONO  OF CACTUPAO
            MOVE ACUP-NEW-CUST-DOB-DAY          TO DOBDAYO  OF CACTUPAO
@@ -3102,6 +3164,10 @@
               WHEN FLG-FICO-SCORE-NOT-OK
               WHEN FLG-FICO-SCORE-BLANK
                   MOVE -1              TO ACSTFCOL OF CACTUPAI
+      *    Experian Score
+              WHEN FLG-EXPERIAN-SCORE-NOT-OK
+              WHEN FLG-EXPERIAN-SCORE-BLANK
+                  MOVE -1              TO ACSTEXPL OF CACTUPAI
       *    First Name
               WHEN FLG-FIRST-NAME-NOT-OK
               WHEN FLG-FIRST-NAME-BLANK
@@ -3336,6 +3402,12 @@
              ==(SCRNVAR2)== BY ==ACSTFCO==
              ==(MAPNAME3)== BY ==CACTUPA== .
 
+      *    Experian Score
+           COPY CSSETATY REPLACING
+             ==(TESTVAR1)== BY ==EXPERIAN-SCORE==
+             ==(SCRNVAR2)== BY ==ACSTEXP==
+             ==(MAPNAME3)== BY ==CACTUPA== .
+
       *    First Name
            COPY CSSETATY REPLACING
              ==(TESTVAR1)== BY ==FIRST-NAME==
@@ -3465,6 +3537,7 @@
                                          ACTSSN2A OF CACTUPAI
                                          ACTSSN3A OF CACTUPAI
                                          ACSTFCOA OF CACTUPAI
+                                         ACSTEXPA OF CACTUPAI
       *Date of Birth
                                          DOBYEARA OF CACTUPAI
                                          DOBMONA  OF CACTUPAI
@@ -3533,6 +3606,7 @@
                                          ACTSSN2A OF CACTUPAI
                                          ACTSSN3A OF CACTUPAI
                                          ACSTFCOA OF CACTUPAI
+                                         ACSTEXPA OF CACTUPAI
 
                                          ACSFNAMA OF CACTUPAI
                                          ACSMNAMA OF CACTUPAI
@@ -3859,6 +3933,9 @@
            MOVE CUST-DOB-YYYY-MM-DD(9:2) TO ACUP-OLD-CUST-DOB-DAY
       *FICO
            MOVE CUST-FICO-CREDIT-SCORE   TO ACUP-OLD-CUST-FICO-SCORE
+      *Experian
+           MOVE CUST-EXPERIAN-CREDIT-SCORE
+                                         TO ACUP-OLD-CUST-EXPERIAN-SCORE
       *First Name
            MOVE CUST-FIRST-NAME          TO ACUP-OLD-CUST-FIRST-NAME
       *Middle Name
@@ -4057,6 +4134,8 @@
                                          TO CUST-UPDATE-PRI-CARD-IND
            MOVE ACUP-NEW-CUST-FICO-SCORE TO
                                    CUST-UPDATE-FICO-CREDIT-SCORE
+           MOVE ACUP-NEW-CUST-EXPERIAN-SCORE TO
+                                   CUST-UPDATE-EXPERIAN-CREDIT-SCORE
       *****************************************************************
       * Update account *
       *****************************************************************
@@ -4184,6 +4263,9 @@
                                        EQUAL
                                             ACUP-OLD-CUST-PRI-HOLDER-IND
            AND CUST-FICO-CREDIT-SCORE  EQUAL ACUP-OLD-CUST-FICO-SCORE
+           AND CUST-EXPERIAN-CREDIT-SCORE
+                                       EQUAL
+                                          ACUP-OLD-CUST-EXPERIAN-SCORE
                CONTINUE
            ELSE
               SET DATA-WAS-CHANGED-BEFORE-UPDATE TO TRUE
