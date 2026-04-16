@@ -50,6 +50,7 @@ public class PostTransactionJob {
             tran.setMerchantCity(daily.getMerchantCity());
             tran.setMerchantZip(daily.getMerchantZip());
             tran.setCardNumber(daily.getCardNumber());
+            tran.setAccountId(daily.getAccountId());
             tran.setOriginalTimestamp(daily.getOriginalTimestamp());
             tran.setProcessedTimestamp(processedTs);
             transactionRepository.save(tran);

@@ -44,6 +44,9 @@ public class DailyTransaction {
     @Column(name = "card_number", length = 16)
     private String cardNumber;
 
+    @Column(name = "account_id")
+    private Long accountId;
+
     @Column(name = "original_timestamp", length = 26)
     private String originalTimestamp;
 
@@ -73,6 +76,8 @@ public class DailyTransaction {
     public void setMerchantZip(String merchantZip) { this.merchantZip = merchantZip; }
     public String getCardNumber() { return cardNumber; }
     public void setCardNumber(String cardNumber) { this.cardNumber = cardNumber; }
+    public Long getAccountId() { return accountId; }
+    public void setAccountId(Long accountId) { this.accountId = accountId; }
     public String getOriginalTimestamp() { return originalTimestamp; }
     public void setOriginalTimestamp(String originalTimestamp) { this.originalTimestamp = originalTimestamp; }
     public String getProcessedTimestamp() { return processedTimestamp; }

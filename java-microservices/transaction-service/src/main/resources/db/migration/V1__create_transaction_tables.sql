@@ -29,9 +29,11 @@ CREATE TABLE daily_transactions (
     merchant_city        VARCHAR(50),
     merchant_zip         VARCHAR(10),
     card_number          VARCHAR(16),
+    account_id           BIGINT,
     original_timestamp   VARCHAR(26),
     processed_timestamp  VARCHAR(26)
 );
+CREATE INDEX idx_dalytran_account ON daily_transactions(account_id);
 
 CREATE TABLE transaction_types (
     type_code        VARCHAR(2) PRIMARY KEY,
