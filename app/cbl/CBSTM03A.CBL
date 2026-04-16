@@ -117,6 +117,10 @@
                10  FILLER  VALUE 'FICO Score         :' PIC X(20).
                10  ST-FICO-SCORE                        PIC X(20).
                10  FILLER  VALUE SPACES                 PIC X(40).
+           05  ST-LINE9A.
+               10  FILLER  VALUE 'Experian Score     :' PIC X(20).
+               10  ST-EXPERIAN-SCORE                    PIC X(20).
+               10  FILLER  VALUE SPACES                 PIC X(40).
            05  ST-LINE10.
                10  FILLER  VALUE ALL '-'                PIC X(80).
            05  ST-LINE11.
@@ -483,6 +487,7 @@
            MOVE ACCT-ID TO ST-ACCT-ID.
            MOVE ACCT-CURR-BAL TO ST-CURR-BAL.
            MOVE CUST-FICO-CREDIT-SCORE TO ST-FICO-SCORE.
+           MOVE CUST-EXPERIAN-CREDIT-SCORE TO ST-EXPERIAN-SCORE.
            PERFORM 5200-WRITE-HTML-NMADBS THRU 5200-EXIT.
 
            WRITE FD-STMTFILE-REC FROM ST-LINE1.
@@ -495,6 +500,7 @@
            WRITE FD-STMTFILE-REC FROM ST-LINE7.
            WRITE FD-STMTFILE-REC FROM ST-LINE8.
            WRITE FD-STMTFILE-REC FROM ST-LINE9.
+           WRITE FD-STMTFILE-REC FROM ST-LINE9A.
            WRITE FD-STMTFILE-REC FROM ST-LINE10.
            WRITE FD-STMTFILE-REC FROM ST-LINE11.
            WRITE FD-STMTFILE-REC FROM ST-LINE12.
@@ -627,6 +633,13 @@
            MOVE SPACES TO HTML-BSIC-LN.
            STRING '<p>FICO Score         : ' DELIMITED BY '*'
                   ST-FICO-SCORE DELIMITED BY '*'
+                  '</p>' DELIMITED BY '*'
+                  INTO HTML-BSIC-LN
+           END-STRING.
+           WRITE FD-HTMLFILE-REC FROM HTML-BSIC-LN.
+           MOVE SPACES TO HTML-BSIC-LN.
+           STRING '<p>Experian Score     : ' DELIMITED BY '*'
+                  ST-EXPERIAN-SCORE DELIMITED BY '*'
                   '</p>' DELIMITED BY '*'
                   INTO HTML-BSIC-LN
            END-STRING.

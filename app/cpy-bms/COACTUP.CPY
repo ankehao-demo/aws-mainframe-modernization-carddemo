@@ -202,6 +202,12 @@
              03 ACSTFCOA    PICTURE X.
            02  FILLER   PICTURE X(4).
            02  ACSTFCOI  PIC X(3).
+           02  ACSTEXPL    COMP  PIC  S9(4).
+           02  ACSTEXPF    PICTURE X.
+           02  FILLER REDEFINES ACSTEXPF.
+             03 ACSTEXPA    PICTURE X.
+           02  FILLER   PICTURE X(4).
+           02  ACSTEXPI  PIC X(3).
            02  ACSFNAML    COMP  PIC  S9(4).
            02  ACSFNAMF    PICTURE X.
            02  FILLER REDEFINES ACSFNAMF.
@@ -528,6 +534,12 @@
            02  ACSTFCOH    PICTURE X.
            02  ACSTFCOV    PICTURE X.
            02  ACSTFCOO  PIC X(3).
+           02  FILLER PICTURE X(3).
+           02  ACSTEXPC    PICTURE X.
+           02  ACSTEXPP    PICTURE X.
+           02  ACSTEXPH    PICTURE X.
+           02  ACSTEXPV    PICTURE X.
+           02  ACSTEXPO  PIC X(3).
            02  FILLER PICTURE X(3).
            02  ACSFNAMC    PICTURE X.
            02  ACSFNAMP    PICTURE X.

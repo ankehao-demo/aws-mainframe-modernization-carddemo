@@ -19,8 +19,9 @@
 		     05  CUST-DOB-YYYYMMDD                       PIC X(10).
 		     05  CUST-EFT-ACCOUNT-ID                     PIC X(10).
 		     05  CUST-PRI-CARD-HOLDER-IND                PIC X(01).
-		     05  CUST-FICO-CREDIT-SCORE                  PIC 9(03).
-             05  FILLER                                  PIC X(168).      
+	 	     05  CUST-FICO-CREDIT-SCORE                  PIC 9(03).
+ 	     05  CUST-EXPERIAN-CREDIT-SCORE              PIC 9(03).
+              05  FILLER                                  PIC X(165).      
       *
       * Ver: CardDemo_v1.0-15-g27d6c6f-68 Date: 2022-07-19 23:15:59 CDT
       *
