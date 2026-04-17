@@ -1,0 +1,1877 @@
+openapi: 3.0.3
+info:
+  title: CardDemo COBOL Copybook API
+  version: 1.0.0
+  description: Auto-generated OpenAPI specification from COBOL copybook data structures in the AWS CardDemo mainframe modernization
+    application. Each schema corresponds to a COBOL 01-level record definition.
+paths: {}
+components:
+  schemas:
+    CarddemoAdminMenuOptions:
+      type: object
+      x-source-copybook: COADM02Y.cpy
+    CarddemoCommarea:
+      type: object
+      x-source-copybook: COCOM01Y.cpy
+      properties:
+        cdemoGeneralInfo:
+          type: object
+          properties:
+            cdemoFromTranid:
+              type: string
+              maxLength: 4
+              x-cobol-pic: X(04)
+            cdemoFromProgram:
+              type: string
+              maxLength: 8
+              x-cobol-pic: X(08)
+            cdemoToTranid:
+              type: string
+              maxLength: 4
+              x-cobol-pic: X(04)
+            cdemoToProgram:
+              type: string
+              maxLength: 8
+              x-cobol-pic: X(08)
+            cdemoUserId:
+              type: string
+              maxLength: 8
+              x-cobol-pic: X(08)
+            cdemoUserType:
+              type: string
+              maxLength: 1
+              x-conditions:
+              - name: CDEMO-USRTYP-ADMIN
+                values:
+                - A
+              - name: CDEMO-USRTYP-USER
+                values:
+                - U
+              enum:
+              - A
+              - U
+              x-cobol-pic: X(01)
+            cdemoPgmContext:
+              type: integer
+              x-cobol-pic: 9(01)
+              x-conditions:
+              - name: CDEMO-PGM-ENTER
+                values:
+                - 0
+              - name: CDEMO-PGM-REENTER
+                values:
+                - 1
+              enum:
+              - 0
+              - 1
+          required:
+          - cdemoFromTranid
+          - cdemoFromProgram
+          - cdemoToTranid
+          - cdemoToProgram
+          - cdemoUserId
+          - cdemoUserType
+          - cdemoPgmContext
+        cdemoCustomerInfo:
+          type: object
+          properties:
+            cdemoCustId:
+              type: integer
+              x-cobol-pic: 9(09)
+            cdemoCustFname:
+              type: string
+              maxLength: 25
+              x-cobol-pic: X(25)
+            cdemoCustMname:
+              type: string
+              maxLength: 25
+              x-cobol-pic: X(25)
+            cdemoCustLname:
+              type: string
+              maxLength: 25
+              x-cobol-pic: X(25)
+          required:
+          - cdemoCustId
+          - cdemoCustFname
+          - cdemoCustMname
+          - cdemoCustLname
+        cdemoAccountInfo:
+          type: object
+          properties:
+            cdemoAcctId:
+              type: integer
+              x-cobol-pic: 9(11)
+            cdemoAcctStatus:
+              type: string
+              maxLength: 1
+              x-cobol-pic: X(01)
+          required:
+          - cdemoAcctId
+          - cdemoAcctStatus
+        cdemoCardInfo:
+          type: object
+          properties:
+            cdemoCardNum:
+              type: integer
+              x-cobol-pic: 9(16)
+          required:
+          - cdemoCardNum
+        cdemoMoreInfo:
+          type: object
+          properties:
+            cdemoLastMap:
+              type: string
+              maxLength: 7
+              x-cobol-pic: X(7)
+            cdemoLastMapset:
+              type: string
+              maxLength: 7
+              x-cobol-pic: X(7)
+          required:
+          - cdemoLastMap
+          - cdemoLastMapset
+      required:
+      - cdemoGeneralInfo
+      - cdemoCustomerInfo
+      - cdemoAccountInfo
+      - cdemoCardInfo
+      - cdemoMoreInfo
+    CodatecnRec:
+      type: object
+      x-source-copybook: CODATECN.cpy
+      properties:
+        codatecnInRec:
+          type: object
+          properties:
+            codatecnType:
+              type: string
+              maxLength: 1
+              x-conditions:
+              - name: YYYYMMDD-IN
+                values:
+                - '"1"'
+              - name: YYYY-MM-DD-IN
+                values:
+                - '"2"'
+              enum:
+              - '"1"'
+              - '"2"'
+              x-cobol-pic: X
+            codatecnInpDate:
+              type: string
+              maxLength: 20
+              x-cobol-pic: X(20)
+            codatecn1inp:
+              type: object
+              properties:
+                codatecn1yyyy:
+                  type: string
+                  maxLength: 4
+                  x-cobol-pic: XXXX
+                codatecn1mm:
+                  type: string
+                  maxLength: 2
+                  x-cobol-pic: XX
+                codatecn1dd:
+                  type: string
+                  maxLength: 2
+                  x-cobol-pic: XX
+                codatecn1fil:
+                  type: string
+                  maxLength: 12
+                  x-cobol-pic: X(12)
+              required:
+              - codatecn1yyyy
+              - codatecn1mm
+              - codatecn1dd
+              - codatecn1fil
+              x-redefines: CODATECN-INP-DATE
+            codatecn2inp:
+              type: object
+              properties:
+                codatecn1oYyyy:
+                  type: string
+                  maxLength: 4
+                  x-cobol-pic: XXXX
+                codatecn1iS1:
+                  type: string
+                  maxLength: 1
+                  x-cobol-pic: X
+                codatecn1mm:
+                  type: string
+                  maxLength: 2
+                  x-cobol-pic: XX
+                codatecn1iS2:
+                  type: string
+                  maxLength: 1
+                  x-cobol-pic: X
+                codatecn2yy:
+                  type: string
+                  maxLength: 2
+                  x-cobol-pic: XX
+                codatecn2fil:
+                  type: string
+                  maxLength: 10
+                  x-cobol-pic: X(10)
+              required:
+              - codatecn1oYyyy
+              - codatecn1iS1
+              - codatecn1mm
+              - codatecn1iS2
+              - codatecn2yy
+              - codatecn2fil
+              x-redefines: CODATECN-INP-DATE
+          required:
+          - codatecnType
+          - codatecnInpDate
+          - codatecn1inp
+          - codatecn2inp
+        codatecnOutRec:
+          type: object
+          properties:
+            codatecnOuttype:
+              type: string
+              maxLength: 1
+              x-conditions:
+              - name: YYYY-MM-DD-OP
+                values:
+                - '"1"'
+              - name: YYYYMMDD-OP
+                values:
+                - '"2"'
+              enum:
+              - '"1"'
+              - '"2"'
+              x-cobol-pic: X
+            codatecn0utDate:
+              type: string
+              maxLength: 20
+              x-cobol-pic: X(20)
+            codatecn1out:
+              type: object
+              properties:
+                codatecn1oYyyy:
+                  type: string
+                  maxLength: 4
+                  x-cobol-pic: XXXX
+                codatecn1oS1:
+                  type: string
+                  maxLength: 1
+                  x-cobol-pic: X
+                codatecn1oMm:
+                  type: string
+                  maxLength: 2
+                  x-cobol-pic: XX
+                codatecn1oS2:
+                  type: string
+                  maxLength: 1
+                  x-cobol-pic: X
+                codatecn1oDd:
+                  type: string
+                  maxLength: 2
+                  x-cobol-pic: XX
+                codatecn1ofil:
+                  type: string
+                  maxLength: 10
+                  x-cobol-pic: X(10)
+              required:
+              - codatecn1oYyyy
+              - codatecn1oS1
+              - codatecn1oMm
+              - codatecn1oS2
+              - codatecn1oDd
+              - codatecn1ofil
+              x-redefines: CODATECN-0UT-DATE
+            codatecn2out:
+              type: object
+              properties:
+                codatecn2oYyyy:
+                  type: string
+                  maxLength: 4
+                  x-cobol-pic: XXXX
+                codatecn2oMm:
+                  type: string
+                  maxLength: 2
+                  x-cobol-pic: XX
+                codatecn2oDd:
+                  type: string
+                  maxLength: 2
+                  x-cobol-pic: XX
+                codatecn2ofil:
+                  type: string
+                  maxLength: 12
+                  x-cobol-pic: X(12)
+              required:
+              - codatecn2oYyyy
+              - codatecn2oMm
+              - codatecn2oDd
+              - codatecn2ofil
+              x-redefines: CODATECN-0UT-DATE
+          required:
+          - codatecnOuttype
+          - codatecn0utDate
+          - codatecn1out
+          - codatecn2out
+        codatecnErrorMsg:
+          type: string
+          maxLength: 38
+          x-cobol-pic: X(38)
+      required:
+      - codatecnInRec
+      - codatecnOutRec
+      - codatecnErrorMsg
+    CarddemoMainMenuOptions:
+      type: object
+      x-source-copybook: COMEN02Y.cpy
+      properties:
+        cdemoMenuOptCount:
+          type: integer
+          x-cobol-pic: 9(02)
+        cdemoMenuOptionsData:
+          type: object
+        cdemoMenuOptions:
+          type: object
+          properties:
+            cdemoMenuOpt:
+              type: array
+              items:
+                type: object
+                properties:
+                  cdemoMenuOptNum:
+                    type: integer
+                    x-cobol-pic: 9(02)
+                  cdemoMenuOptName:
+                    type: string
+                    maxLength: 35
+                    x-cobol-pic: X(35)
+                  cdemoMenuOptPgmname:
+                    type: string
+                    maxLength: 8
+                    x-cobol-pic: X(08)
+                  cdemoMenuOptUsrtype:
+                    type: string
+                    maxLength: 1
+                    x-cobol-pic: X(01)
+                required:
+                - cdemoMenuOptNum
+                - cdemoMenuOptName
+                - cdemoMenuOptPgmname
+                - cdemoMenuOptUsrtype
+              minItems: 12
+              maxItems: 12
+          required:
+          - cdemoMenuOpt
+          x-redefines: CDEMO-MENU-OPTIONS-DATA
+      required:
+      - cdemoMenuOptCount
+      - cdemoMenuOptionsData
+      - cdemoMenuOptions
+    CcdaScreenTitle:
+      type: object
+      x-source-copybook: COTTL01Y.cpy
+      properties:
+        ccdaTitle01:
+          type: string
+          maxLength: 40
+          x-cobol-pic: X(40)
+        ccdaTitle02:
+          type: string
+          maxLength: 40
+          x-cobol-pic: X(40)
+        ccdaThankYou:
+          type: string
+          maxLength: 40
+          x-cobol-pic: X(40)
+      required:
+      - ccdaTitle01
+      - ccdaTitle02
+      - ccdaThankYou
+    WsDateTime:
+      type: object
+      x-source-copybook: CSDAT01Y.cpy
+      properties:
+        wsCurdateData:
+          type: object
+          properties:
+            wsCurdate:
+              type: object
+              properties:
+                wsCurdateYear:
+                  type: integer
+                  x-cobol-pic: 9(04)
+                wsCurdateMonth:
+                  type: integer
+                  x-cobol-pic: 9(02)
+                wsCurdateDay:
+                  type: integer
+                  x-cobol-pic: 9(02)
+              required:
+              - wsCurdateYear
+              - wsCurdateMonth
+              - wsCurdateDay
+            wsCurdateN:
+              type: integer
+              x-cobol-pic: 9(08)
+              x-redefines: WS-CURDATE
+            wsCurtime:
+              type: object
+              properties:
+                wsCurtimeHours:
+                  type: integer
+                  x-cobol-pic: 9(02)
+                wsCurtimeMinute:
+                  type: integer
+                  x-cobol-pic: 9(02)
+                wsCurtimeSecond:
+                  type: integer
+                  x-cobol-pic: 9(02)
+                wsCurtimeMilsec:
+                  type: integer
+                  x-cobol-pic: 9(02)
+              required:
+              - wsCurtimeHours
+              - wsCurtimeMinute
+              - wsCurtimeSecond
+              - wsCurtimeMilsec
+            wsCurtimeN:
+              type: integer
+              x-cobol-pic: 9(08)
+              x-redefines: WS-CURTIME
+          required:
+          - wsCurdate
+          - wsCurdateN
+          - wsCurtime
+          - wsCurtimeN
+        wsCurdateMmDdYy:
+          type: object
+          properties:
+            wsCurdateMm:
+              type: integer
+              x-cobol-pic: 9(02)
+            wsCurdateDd:
+              type: integer
+              x-cobol-pic: 9(02)
+            wsCurdateYy:
+              type: integer
+              x-cobol-pic: 9(02)
+          required:
+          - wsCurdateMm
+          - wsCurdateDd
+          - wsCurdateYy
+        wsCurtimeHhMmSs:
+          type: object
+          properties:
+            wsCurtimeHh:
+              type: integer
+              x-cobol-pic: 9(02)
+            wsCurtimeMm:
+              type: integer
+              x-cobol-pic: 9(02)
+            wsCurtimeSs:
+              type: integer
+              x-cobol-pic: 9(02)
+          required:
+          - wsCurtimeHh
+          - wsCurtimeMm
+          - wsCurtimeSs
+        wsTimestamp:
+          type: object
+          properties:
+            wsTimestampDtYyyy:
+              type: integer
+              x-cobol-pic: 9(04)
+            wsTimestampDtMm:
+              type: integer
+              x-cobol-pic: 9(02)
+            wsTimestampDtDd:
+              type: integer
+              x-cobol-pic: 9(02)
+            wsTimestampTmHh:
+              type: integer
+              x-cobol-pic: 9(02)
+            wsTimestampTmMm:
+              type: integer
+              x-cobol-pic: 9(02)
+            wsTimestampTmSs:
+              type: integer
+              x-cobol-pic: 9(02)
+            wsTimestampTmMs6:
+              type: integer
+              x-cobol-pic: 9(06)
+          required:
+          - wsTimestampDtYyyy
+          - wsTimestampDtMm
+          - wsTimestampDtDd
+          - wsTimestampTmHh
+          - wsTimestampTmMm
+          - wsTimestampTmSs
+          - wsTimestampTmMs6
+      required:
+      - wsCurdateData
+      - wsCurdateMmDdYy
+      - wsCurtimeHhMmSs
+      - wsTimestamp
+    WsUsPhoneAreaCodeToEdit:
+      type: object
+      x-source-copybook: CSLKPCDY.cpy
+    UsStateCodeToEdit:
+      type: object
+      x-source-copybook: CSLKPCDY.cpy
+    UsStateZipcodeToEdit:
+      type: object
+      x-source-copybook: CSLKPCDY.cpy
+      properties:
+        usStateAndFirstZip2:
+          type: string
+          maxLength: 4
+          x-conditions:
+          - name: VALID-US-STATE-ZIP-CD2-COMBO
+            values:
+            - AA34
+            - AE90
+            - AE91
+            - AE92
+            - AE93
+            - AE94
+            - AE95
+            - AE96
+            - AE97
+            - AE98
+            - AK99
+            - AL35
+            - AL36
+            - AP96
+            - AR71
+            - AR72
+            - AS96
+            - AZ85
+            - AZ86
+            - CA90
+            - CA91
+            - CA92
+            - CA93
+            - CA94
+            - CA95
+            - CA96
+            - CO80
+            - CO81
+            - CT60
+            - CT61
+            - CT62
+            - CT63
+            - CT64
+            - CT65
+            - CT66
+            - CT67
+            - CT68
+            - CT69
+            - DC20
+            - DC56
+            - DC88
+            - DE19
+            - FL32
+            - FL33
+            - FL34
+            - FM96
+            - GA30
+            - GA31
+            - GA39
+            - GU96
+            - HI96
+            - IA50
+            - IA51
+            - IA52
+            - ID83
+            - IL60
+            - IL61
+            - IL62
+            - IN46
+            - IN47
+            - KS66
+            - KS67
+            - KY40
+            - KY41
+            - KY42
+            - LA70
+            - LA71
+            - MA10
+            - MA11
+            - MA12
+            - MA13
+            - MA14
+            - MA15
+            - MA16
+            - MA17
+            - MA18
+            - MA19
+            - MA20
+            - MA21
+            - MA22
+            - MA23
+            - MA24
+            - MA25
+            - MA26
+            - MA27
+            - MA55
+            - MD20
+            - MD21
+            - ME39
+            - ME40
+            - ME41
+            - ME42
+            - ME43
+            - ME44
+            - ME45
+            - ME46
+            - ME47
+            - ME48
+            - ME49
+            - MH96
+            - MI48
+            - MI49
+            - MN55
+            - MN56
+            - MO63
+            - MO64
+            - MO65
+            - MO72
+            - MP96
+            - MS38
+            - MS39
+            - MT59
+            - NC27
+            - NC28
+            - ND58
+            - NE68
+            - NE69
+            - NH30
+            - NH31
+            - NH32
+            - NH33
+            - NH34
+            - NH35
+            - NH36
+            - NH37
+            - NH38
+            - NJ70
+            - NJ71
+            - NJ72
+            - NJ73
+            - NJ74
+            - NJ75
+            - NJ76
+            - NJ77
+            - NJ78
+            - NJ79
+            - NJ80
+            - NJ81
+            - NJ82
+            - NJ83
+            - NJ84
+            - NJ85
+            - NJ86
+            - NJ87
+            - NJ88
+            - NJ89
+            - NM87
+            - NM88
+            - NV88
+            - NV89
+            - NY50
+            - NY54
+            - NY63
+            - NY10
+            - NY11
+            - NY12
+            - NY13
+            - NY14
+            - OH43
+            - OH44
+            - OH45
+            - OK73
+            - OK74
+            - OR97
+            - PA15
+            - PA16
+            - PA17
+            - PA18
+            - PA19
+            - PR60
+            - PR61
+            - PR62
+            - PR63
+            - PR64
+            - PR65
+            - PR66
+            - PR67
+            - PR68
+            - PR69
+            - PR70
+            - PR71
+            - PR72
+            - PR73
+            - PR74
+            - PR75
+            - PR76
+            - PR77
+            - PR78
+            - PR79
+            - PR90
+            - PR91
+            - PR92
+            - PR93
+            - PR94
+            - PR95
+            - PR96
+            - PR97
+            - PR98
+            - PW96
+            - RI28
+            - RI29
+            - SC29
+            - SD57
+            - TN37
+            - TN38
+            - TX73
+            - TX75
+            - TX76
+            - TX77
+            - TX78
+            - TX79
+            - TX88
+            - UT84
+            - VA20
+            - VA22
+            - VA23
+            - VA24
+            - VI80
+            - VI82
+            - VI83
+            - VI84
+            - VI85
+            - VT50
+            - VT51
+            - VT52
+            - VT53
+            - VT54
+            - VT56
+            - VT57
+            - VT58
+            - VT59
+            - WA98
+            - WA99
+            - WI53
+            - WI54
+            - WV24
+            - WV25
+            - WV26
+            - WY82
+            - WY83
+          enum:
+          - AA34
+          - AE90
+          - AE91
+          - AE92
+          - AE93
+          - AE94
+          - AE95
+          - AE96
+          - AE97
+          - AE98
+          - AK99
+          - AL35
+          - AL36
+          - AP96
+          - AR71
+          - AR72
+          - AS96
+          - AZ85
+          - AZ86
+          - CA90
+          - CA91
+          - CA92
+          - CA93
+          - CA94
+          - CA95
+          - CA96
+          - CO80
+          - CO81
+          - CT60
+          - CT61
+          - CT62
+          - CT63
+          - CT64
+          - CT65
+          - CT66
+          - CT67
+          - CT68
+          - CT69
+          - DC20
+          - DC56
+          - DC88
+          - DE19
+          - FL32
+          - FL33
+          - FL34
+          - FM96
+          - GA30
+          - GA31
+          - GA39
+          - GU96
+          - HI96
+          - IA50
+          - IA51
+          - IA52
+          - ID83
+          - IL60
+          - IL61
+          - IL62
+          - IN46
+          - IN47
+          - KS66
+          - KS67
+          - KY40
+          - KY41
+          - KY42
+          - LA70
+          - LA71
+          - MA10
+          - MA11
+          - MA12
+          - MA13
+          - MA14
+          - MA15
+          - MA16
+          - MA17
+          - MA18
+          - MA19
+          - MA20
+          - MA21
+          - MA22
+          - MA23
+          - MA24
+          - MA25
+          - MA26
+          - MA27
+          - MA55
+          - MD20
+          - MD21
+          - ME39
+          - ME40
+          - ME41
+          - ME42
+          - ME43
+          - ME44
+          - ME45
+          - ME46
+          - ME47
+          - ME48
+          - ME49
+          - MH96
+          - MI48
+          - MI49
+          - MN55
+          - MN56
+          - MO63
+          - MO64
+          - MO65
+          - MO72
+          - MP96
+          - MS38
+          - MS39
+          - MT59
+          - NC27
+          - NC28
+          - ND58
+          - NE68
+          - NE69
+          - NH30
+          - NH31
+          - NH32
+          - NH33
+          - NH34
+          - NH35
+          - NH36
+          - NH37
+          - NH38
+          - NJ70
+          - NJ71
+          - NJ72
+          - NJ73
+          - NJ74
+          - NJ75
+          - NJ76
+          - NJ77
+          - NJ78
+          - NJ79
+          - NJ80
+          - NJ81
+          - NJ82
+          - NJ83
+          - NJ84
+          - NJ85
+          - NJ86
+          - NJ87
+          - NJ88
+          - NJ89
+          - NM87
+          - NM88
+          - NV88
+          - NV89
+          - NY50
+          - NY54
+          - NY63
+          - NY10
+          - NY11
+          - NY12
+          - NY13
+          - NY14
+          - OH43
+          - OH44
+          - OH45
+          - OK73
+          - OK74
+          - OR97
+          - PA15
+          - PA16
+          - PA17
+          - PA18
+          - PA19
+          - PR60
+          - PR61
+          - PR62
+          - PR63
+          - PR64
+          - PR65
+          - PR66
+          - PR67
+          - PR68
+          - PR69
+          - PR70
+          - PR71
+          - PR72
+          - PR73
+          - PR74
+          - PR75
+          - PR76
+          - PR77
+          - PR78
+          - PR79
+          - PR90
+          - PR91
+          - PR92
+          - PR93
+          - PR94
+          - PR95
+          - PR96
+          - PR97
+          - PR98
+          - PW96
+          - RI28
+          - RI29
+          - SC29
+          - SD57
+          - TN37
+          - TN38
+          - TX73
+          - TX75
+          - TX76
+          - TX77
+          - TX78
+          - TX79
+          - TX88
+          - UT84
+          - VA20
+          - VA22
+          - VA23
+          - VA24
+          - VI80
+          - VI82
+          - VI83
+          - VI84
+          - VI85
+          - VT50
+          - VT51
+          - VT52
+          - VT53
+          - VT54
+          - VT56
+          - VT57
+          - VT58
+          - VT59
+          - WA98
+          - WA99
+          - WI53
+          - WI54
+          - WV24
+          - WV25
+          - WV26
+          - WY82
+          - WY83
+          x-cobol-pic: X(4)
+        last3OfZip:
+          type: string
+          maxLength: 3
+          x-cobol-pic: X(3)
+      required:
+      - usStateAndFirstZip2
+      - last3OfZip
+    CcdaCommonMessages:
+      type: object
+      x-source-copybook: CSMSG01Y.cpy
+      properties:
+        ccdaMsgThankYou:
+          type: string
+          maxLength: 50
+          x-cobol-pic: X(50)
+        ccdaMsgInvalidKey:
+          type: string
+          maxLength: 50
+          x-cobol-pic: X(50)
+      required:
+      - ccdaMsgThankYou
+      - ccdaMsgInvalidKey
+    AbendData:
+      type: object
+      x-source-copybook: CSMSG02Y.cpy
+      properties:
+        abendCode:
+          type: string
+          maxLength: 4
+          x-cobol-pic: X(4)
+        abendCulprit:
+          type: string
+          maxLength: 8
+          x-cobol-pic: X(8)
+        abendReason:
+          type: string
+          maxLength: 50
+          x-cobol-pic: X(50)
+        abendMsg:
+          type: string
+          maxLength: 72
+          x-cobol-pic: X(72)
+      required:
+      - abendCode
+      - abendCulprit
+      - abendReason
+      - abendMsg
+    SecUserData:
+      type: object
+      x-source-copybook: CSUSR01Y.cpy
+      properties:
+        secUsrId:
+          type: string
+          maxLength: 8
+          x-cobol-pic: X(08)
+        secUsrFname:
+          type: string
+          maxLength: 20
+          x-cobol-pic: X(20)
+        secUsrLname:
+          type: string
+          maxLength: 20
+          x-cobol-pic: X(20)
+        secUsrPwd:
+          type: string
+          maxLength: 8
+          x-cobol-pic: X(08)
+        secUsrType:
+          type: string
+          maxLength: 1
+          x-cobol-pic: X(01)
+        secUsrFiller:
+          type: string
+          maxLength: 23
+          x-cobol-pic: X(23)
+      required:
+      - secUsrId
+      - secUsrFname
+      - secUsrLname
+      - secUsrPwd
+      - secUsrType
+      - secUsrFiller
+    CustomerRecord:
+      type: object
+      x-source-copybook: CUSTREC.cpy
+      properties:
+        custId:
+          type: integer
+          x-cobol-pic: 9(09)
+        custFirstName:
+          type: string
+          maxLength: 25
+          x-cobol-pic: X(25)
+        custMiddleName:
+          type: string
+          maxLength: 25
+          x-cobol-pic: X(25)
+        custLastName:
+          type: string
+          maxLength: 25
+          x-cobol-pic: X(25)
+        custAddrLine1:
+          type: string
+          maxLength: 50
+          x-cobol-pic: X(50)
+        custAddrLine2:
+          type: string
+          maxLength: 50
+          x-cobol-pic: X(50)
+        custAddrLine3:
+          type: string
+          maxLength: 50
+          x-cobol-pic: X(50)
+        custAddrStateCd:
+          type: string
+          maxLength: 2
+          x-cobol-pic: X(02)
+        custAddrCountryCd:
+          type: string
+          maxLength: 3
+          x-cobol-pic: X(03)
+        custAddrZip:
+          type: string
+          maxLength: 10
+          x-cobol-pic: X(10)
+        custPhoneNum1:
+          type: string
+          maxLength: 15
+          x-cobol-pic: X(15)
+        custPhoneNum2:
+          type: string
+          maxLength: 15
+          x-cobol-pic: X(15)
+        custSsn:
+          type: integer
+          x-cobol-pic: 9(09)
+        custGovtIssuedId:
+          type: string
+          maxLength: 20
+          x-cobol-pic: X(20)
+        custDobYyyymmdd:
+          type: string
+          maxLength: 10
+          x-cobol-pic: X(10)
+        custEftAccountId:
+          type: string
+          maxLength: 10
+          x-cobol-pic: X(10)
+        custPriCardHolderInd:
+          type: string
+          maxLength: 1
+          x-cobol-pic: X(01)
+        custFicoCreditScore:
+          type: integer
+          x-cobol-pic: 9(03)
+      required:
+      - custId
+      - custFirstName
+      - custMiddleName
+      - custLastName
+      - custAddrLine1
+      - custAddrLine2
+      - custAddrLine3
+      - custAddrStateCd
+      - custAddrCountryCd
+      - custAddrZip
+      - custPhoneNum1
+      - custPhoneNum2
+      - custSsn
+      - custGovtIssuedId
+      - custDobYyyymmdd
+      - custEftAccountId
+      - custPriCardHolderInd
+      - custFicoCreditScore
+    AccountRecord:
+      type: object
+      x-source-copybook: CVACT01Y.cpy
+      properties:
+        acctId:
+          type: integer
+          x-cobol-pic: 9(11)
+        acctActiveStatus:
+          type: string
+          maxLength: 1
+          x-cobol-pic: X(01)
+        acctCurrBal:
+          type: number
+          format: decimal
+          x-decimal-places: 2
+          x-cobol-pic: S9(10)V99
+        acctCreditLimit:
+          type: number
+          format: decimal
+          x-decimal-places: 2
+          x-cobol-pic: S9(10)V99
+        acctCashCreditLimit:
+          type: number
+          format: decimal
+          x-decimal-places: 2
+          x-cobol-pic: S9(10)V99
+        acctOpenDate:
+          type: string
+          maxLength: 10
+          x-cobol-pic: X(10)
+        acctExpiraionDate:
+          type: string
+          maxLength: 10
+          x-cobol-pic: X(10)
+        acctReissueDate:
+          type: string
+          maxLength: 10
+          x-cobol-pic: X(10)
+        acctCurrCycCredit:
+          type: number
+          format: decimal
+          x-decimal-places: 2
+          x-cobol-pic: S9(10)V99
+        acctCurrCycDebit:
+          type: number
+          format: decimal
+          x-decimal-places: 2
+          x-cobol-pic: S9(10)V99
+        acctAddrZip:
+          type: string
+          maxLength: 10
+          x-cobol-pic: X(10)
+        acctGroupId:
+          type: string
+          maxLength: 10
+          x-cobol-pic: X(10)
+      required:
+      - acctId
+      - acctActiveStatus
+      - acctCurrBal
+      - acctCreditLimit
+      - acctCashCreditLimit
+      - acctOpenDate
+      - acctExpiraionDate
+      - acctReissueDate
+      - acctCurrCycCredit
+      - acctCurrCycDebit
+      - acctAddrZip
+      - acctGroupId
+    CardRecord:
+      type: object
+      x-source-copybook: CVACT02Y.cpy
+      properties:
+        cardNum:
+          type: string
+          maxLength: 16
+          x-cobol-pic: X(16)
+        cardAcctId:
+          type: integer
+          x-cobol-pic: 9(11)
+        cardCvvCd:
+          type: integer
+          x-cobol-pic: 9(03)
+        cardEmbossedName:
+          type: string
+          maxLength: 50
+          x-cobol-pic: X(50)
+        cardExpiraionDate:
+          type: string
+          maxLength: 10
+          x-cobol-pic: X(10)
+        cardActiveStatus:
+          type: string
+          maxLength: 1
+          x-cobol-pic: X(01)
+      required:
+      - cardNum
+      - cardAcctId
+      - cardCvvCd
+      - cardEmbossedName
+      - cardExpiraionDate
+      - cardActiveStatus
+    CardXrefRecord:
+      type: object
+      x-source-copybook: CVACT03Y.cpy
+      properties:
+        xrefCardNum:
+          type: string
+          maxLength: 16
+          x-cobol-pic: X(16)
+        xrefCustId:
+          type: integer
+          x-cobol-pic: 9(09)
+        xrefAcctId:
+          type: integer
+          x-cobol-pic: 9(11)
+      required:
+      - xrefCardNum
+      - xrefCustId
+      - xrefAcctId
+    CcWorkAreas:
+      type: object
+      x-source-copybook: CVCRD01Y.cpy
+      properties:
+        ccAcctIdN:
+          type: integer
+          x-cobol-pic: 9(11)
+          x-redefines: CC-ACCT-ID
+        ccCardNum:
+          type: string
+          maxLength: 16
+          x-cobol-pic: X(16)
+        ccCustId:
+          type: string
+          maxLength: 9
+          x-cobol-pic: X(09)
+      required:
+      - ccAcctIdN
+      - ccCardNum
+      - ccCustId
+    CustomerRecord2:
+      type: object
+      x-source-copybook: CVCUS01Y.cpy
+      properties:
+        custId:
+          type: integer
+          x-cobol-pic: 9(09)
+        custFirstName:
+          type: string
+          maxLength: 25
+          x-cobol-pic: X(25)
+        custMiddleName:
+          type: string
+          maxLength: 25
+          x-cobol-pic: X(25)
+        custLastName:
+          type: string
+          maxLength: 25
+          x-cobol-pic: X(25)
+        custAddrLine1:
+          type: string
+          maxLength: 50
+          x-cobol-pic: X(50)
+        custAddrLine2:
+          type: string
+          maxLength: 50
+          x-cobol-pic: X(50)
+        custAddrLine3:
+          type: string
+          maxLength: 50
+          x-cobol-pic: X(50)
+        custAddrStateCd:
+          type: string
+          maxLength: 2
+          x-cobol-pic: X(02)
+        custAddrCountryCd:
+          type: string
+          maxLength: 3
+          x-cobol-pic: X(03)
+        custAddrZip:
+          type: string
+          maxLength: 10
+          x-cobol-pic: X(10)
+        custPhoneNum1:
+          type: string
+          maxLength: 15
+          x-cobol-pic: X(15)
+        custPhoneNum2:
+          type: string
+          maxLength: 15
+          x-cobol-pic: X(15)
+        custSsn:
+          type: integer
+          x-cobol-pic: 9(09)
+        custGovtIssuedId:
+          type: string
+          maxLength: 20
+          x-cobol-pic: X(20)
+        custDobYyyyMmDd:
+          type: string
+          maxLength: 10
+          x-cobol-pic: X(10)
+        custEftAccountId:
+          type: string
+          maxLength: 10
+          x-cobol-pic: X(10)
+        custPriCardHolderInd:
+          type: string
+          maxLength: 1
+          x-cobol-pic: X(01)
+        custFicoCreditScore:
+          type: integer
+          x-cobol-pic: 9(03)
+      required:
+      - custId
+      - custFirstName
+      - custMiddleName
+      - custLastName
+      - custAddrLine1
+      - custAddrLine2
+      - custAddrLine3
+      - custAddrStateCd
+      - custAddrCountryCd
+      - custAddrZip
+      - custPhoneNum1
+      - custPhoneNum2
+      - custSsn
+      - custGovtIssuedId
+      - custDobYyyyMmDd
+      - custEftAccountId
+      - custPriCardHolderInd
+      - custFicoCreditScore
+    TranCatBalRecord:
+      type: object
+      x-source-copybook: CVTRA01Y.cpy
+      properties:
+        tranCatKey:
+          type: object
+          properties:
+            trancatAcctId:
+              type: integer
+              x-cobol-pic: 9(11)
+            trancatTypeCd:
+              type: string
+              maxLength: 2
+              x-cobol-pic: X(02)
+            trancatCd:
+              type: integer
+              x-cobol-pic: 9(04)
+          required:
+          - trancatAcctId
+          - trancatTypeCd
+          - trancatCd
+        tranCatBal:
+          type: number
+          format: decimal
+          x-decimal-places: 2
+          x-cobol-pic: S9(09)V99
+      required:
+      - tranCatKey
+      - tranCatBal
+    DisGroupRecord:
+      type: object
+      x-source-copybook: CVTRA02Y.cpy
+      properties:
+        disGroupKey:
+          type: object
+          properties:
+            disAcctGroupId:
+              type: string
+              maxLength: 10
+              x-cobol-pic: X(10)
+            disTranTypeCd:
+              type: string
+              maxLength: 2
+              x-cobol-pic: X(02)
+            disTranCatCd:
+              type: integer
+              x-cobol-pic: 9(04)
+          required:
+          - disAcctGroupId
+          - disTranTypeCd
+          - disTranCatCd
+        disIntRate:
+          type: number
+          format: decimal
+          x-decimal-places: 2
+          x-cobol-pic: S9(04)V99
+      required:
+      - disGroupKey
+      - disIntRate
+    TranTypeRecord:
+      type: object
+      x-source-copybook: CVTRA03Y.cpy
+      properties:
+        tranType:
+          type: string
+          maxLength: 2
+          x-cobol-pic: X(02)
+        tranTypeDesc:
+          type: string
+          maxLength: 50
+          x-cobol-pic: X(50)
+      required:
+      - tranType
+      - tranTypeDesc
+    TranCatRecord:
+      type: object
+      x-source-copybook: CVTRA04Y.cpy
+      properties:
+        tranCatKey:
+          type: object
+          properties:
+            tranTypeCd:
+              type: string
+              maxLength: 2
+              x-cobol-pic: X(02)
+            tranCatCd:
+              type: integer
+              x-cobol-pic: 9(04)
+          required:
+          - tranTypeCd
+          - tranCatCd
+        tranCatTypeDesc:
+          type: string
+          maxLength: 50
+          x-cobol-pic: X(50)
+      required:
+      - tranCatKey
+      - tranCatTypeDesc
+    TranRecord:
+      type: object
+      x-source-copybook: CVTRA05Y.cpy
+      properties:
+        tranId:
+          type: string
+          maxLength: 16
+          x-cobol-pic: X(16)
+        tranTypeCd:
+          type: string
+          maxLength: 2
+          x-cobol-pic: X(02)
+        tranCatCd:
+          type: integer
+          x-cobol-pic: 9(04)
+        tranSource:
+          type: string
+          maxLength: 10
+          x-cobol-pic: X(10)
+        tranDesc:
+          type: string
+          maxLength: 100
+          x-cobol-pic: X(100)
+        tranAmt:
+          type: number
+          format: decimal
+          x-decimal-places: 2
+          x-cobol-pic: S9(09)V99
+        tranMerchantId:
+          type: integer
+          x-cobol-pic: 9(09)
+        tranMerchantName:
+          type: string
+          maxLength: 50
+          x-cobol-pic: X(50)
+        tranMerchantCity:
+          type: string
+          maxLength: 50
+          x-cobol-pic: X(50)
+        tranMerchantZip:
+          type: string
+          maxLength: 10
+          x-cobol-pic: X(10)
+        tranCardNum:
+          type: string
+          maxLength: 16
+          x-cobol-pic: X(16)
+        tranOrigTs:
+          type: string
+          maxLength: 26
+          x-cobol-pic: X(26)
+        tranProcTs:
+          type: string
+          maxLength: 26
+          x-cobol-pic: X(26)
+      required:
+      - tranId
+      - tranTypeCd
+      - tranCatCd
+      - tranSource
+      - tranDesc
+      - tranAmt
+      - tranMerchantId
+      - tranMerchantName
+      - tranMerchantCity
+      - tranMerchantZip
+      - tranCardNum
+      - tranOrigTs
+      - tranProcTs
+    DalytranRecord:
+      type: object
+      x-source-copybook: CVTRA06Y.cpy
+      properties:
+        dalytranId:
+          type: string
+          maxLength: 16
+          x-cobol-pic: X(16)
+        dalytranTypeCd:
+          type: string
+          maxLength: 2
+          x-cobol-pic: X(02)
+        dalytranCatCd:
+          type: integer
+          x-cobol-pic: 9(04)
+        dalytranSource:
+          type: string
+          maxLength: 10
+          x-cobol-pic: X(10)
+        dalytranDesc:
+          type: string
+          maxLength: 100
+          x-cobol-pic: X(100)
+        dalytranAmt:
+          type: number
+          format: decimal
+          x-decimal-places: 2
+          x-cobol-pic: S9(09)V99
+        dalytranMerchantId:
+          type: integer
+          x-cobol-pic: 9(09)
+        dalytranMerchantName:
+          type: string
+          maxLength: 50
+          x-cobol-pic: X(50)
+        dalytranMerchantCity:
+          type: string
+          maxLength: 50
+          x-cobol-pic: X(50)
+        dalytranMerchantZip:
+          type: string
+          maxLength: 10
+          x-cobol-pic: X(10)
+        dalytranCardNum:
+          type: string
+          maxLength: 16
+          x-cobol-pic: X(16)
+        dalytranOrigTs:
+          type: string
+          maxLength: 26
+          x-cobol-pic: X(26)
+        dalytranProcTs:
+          type: string
+          maxLength: 26
+          x-cobol-pic: X(26)
+      required:
+      - dalytranId
+      - dalytranTypeCd
+      - dalytranCatCd
+      - dalytranSource
+      - dalytranDesc
+      - dalytranAmt
+      - dalytranMerchantId
+      - dalytranMerchantName
+      - dalytranMerchantCity
+      - dalytranMerchantZip
+      - dalytranCardNum
+      - dalytranOrigTs
+      - dalytranProcTs
+    ReportNameHeader:
+      type: object
+      x-source-copybook: CVTRA07Y.cpy
+      properties:
+        reptShortName:
+          type: string
+          maxLength: 38
+          x-cobol-pic: X(38)
+        reptLongName:
+          type: string
+          maxLength: 41
+          x-cobol-pic: X(41)
+        reptDateHeader:
+          type: string
+          maxLength: 12
+          x-cobol-pic: X(12)
+        reptStartDate:
+          type: string
+          maxLength: 10
+          x-cobol-pic: X(10)
+        reptEndDate:
+          type: string
+          maxLength: 10
+          x-cobol-pic: X(10)
+      required:
+      - reptShortName
+      - reptLongName
+      - reptDateHeader
+      - reptStartDate
+      - reptEndDate
+    TransactionDetailReport:
+      type: object
+      x-source-copybook: CVTRA07Y.cpy
+      properties:
+        tranReportTransId:
+          type: string
+          maxLength: 16
+          x-cobol-pic: X(16)
+        tranReportAccountId:
+          type: string
+          maxLength: 11
+          x-cobol-pic: X(11)
+        tranReportTypeCd:
+          type: string
+          maxLength: 2
+          x-cobol-pic: X(02)
+        tranReportTypeDesc:
+          type: string
+          maxLength: 15
+          x-cobol-pic: X(15)
+        tranReportCatCd:
+          type: integer
+          x-cobol-pic: 9(04)
+        tranReportCatDesc:
+          type: string
+          maxLength: 29
+          x-cobol-pic: X(29)
+        tranReportSource:
+          type: string
+          maxLength: 10
+          x-cobol-pic: X(10)
+        tranReportAmt:
+          type: string
+          maxLength: 15
+          x-cobol-pic: -ZZZ,ZZZ,ZZZ.ZZ
+      required:
+      - tranReportTransId
+      - tranReportAccountId
+      - tranReportTypeCd
+      - tranReportTypeDesc
+      - tranReportCatCd
+      - tranReportCatDesc
+      - tranReportSource
+      - tranReportAmt
+    TransactionHeader1:
+      type: object
+      x-source-copybook: CVTRA07Y.cpy
+    TransactionHeader2:
+      type: object
+      x-source-copybook: CVTRA07Y.cpy
+    ReportPageTotals:
+      type: object
+      x-source-copybook: CVTRA07Y.cpy
+      properties:
+        reptPageTotal:
+          type: string
+          maxLength: 15
+          x-cobol-pic: +ZZZ,ZZZ,ZZZ.ZZ
+      required:
+      - reptPageTotal
+    ReportAccountTotals:
+      type: object
+      x-source-copybook: CVTRA07Y.cpy
+      properties:
+        reptAccountTotal:
+          type: string
+          maxLength: 15
+          x-cobol-pic: +ZZZ,ZZZ,ZZZ.ZZ
+      required:
+      - reptAccountTotal
+    ReportGrandTotals:
+      type: object
+      x-source-copybook: CVTRA07Y.cpy
+      properties:
+        reptGrandTotal:
+          type: string
+          maxLength: 15
+          x-cobol-pic: +ZZZ,ZZZ,ZZZ.ZZ
+      required:
+      - reptGrandTotal
+    UnusedData:
+      type: object
+      x-source-copybook: UNUSED1Y.cpy
+      properties:
+        unusedId:
+          type: string
+          maxLength: 8
+          x-cobol-pic: X(08)
+        unusedFname:
+          type: string
+          maxLength: 20
+          x-cobol-pic: X(20)
+        unusedLname:
+          type: string
+          maxLength: 20
+          x-cobol-pic: X(20)
+        unusedPwd:
+          type: string
+          maxLength: 8
+          x-cobol-pic: X(08)
+        unusedType:
+          type: string
+          maxLength: 1
+          x-cobol-pic: X(01)
+        unusedFiller:
+          type: string
+          maxLength: 23
+          x-cobol-pic: X(23)
+      required:
+      - unusedId
+      - unusedFname
+      - unusedLname
+      - unusedPwd
+      - unusedType
+      - unusedFiller
+    TrnxRecord:
+      type: object
+      x-source-copybook: COSTM01.CPY
+      properties:
+        trnxKey:
+          type: object
+          properties:
+            trnxCardNum:
+              type: string
+              maxLength: 16
+              x-cobol-pic: X(16)
+            trnxId:
+              type: string
+              maxLength: 16
+              x-cobol-pic: X(16)
+          required:
+          - trnxCardNum
+          - trnxId
+        trnxRest:
+          type: object
+          properties:
+            trnxTypeCd:
+              type: string
+              maxLength: 2
+              x-cobol-pic: X(02)
+            trnxCatCd:
+              type: integer
+              x-cobol-pic: 9(04)
+            trnxSource:
+              type: string
+              maxLength: 10
+              x-cobol-pic: X(10)
+            trnxDesc:
+              type: string
+              maxLength: 100
+              x-cobol-pic: X(100)
+            trnxAmt:
+              type: number
+              format: decimal
+              x-decimal-places: 2
+              x-cobol-pic: S9(09)V99
+            trnxMerchantId:
+              type: integer
+              x-cobol-pic: 9(09)
+            trnxMerchantName:
+              type: string
+              maxLength: 50
+              x-cobol-pic: X(50)
+            trnxMerchantCity:
+              type: string
+              maxLength: 50
+              x-cobol-pic: X(50)
+            trnxMerchantZip:
+              type: string
+              maxLength: 10
+              x-cobol-pic: X(10)
+            trnxOrigTs:
+              type: string
+              maxLength: 26
+              x-cobol-pic: X(26)
+            trnxProcTs:
+              type: string
+              maxLength: 26
+              x-cobol-pic: X(26)
+          required:
+          - trnxTypeCd
+          - trnxCatCd
+          - trnxSource
+          - trnxDesc
+          - trnxAmt
+          - trnxMerchantId
+          - trnxMerchantName
+          - trnxMerchantCity
+          - trnxMerchantZip
+          - trnxOrigTs
+          - trnxProcTs
+      required:
+      - trnxKey
+      - trnxRest
