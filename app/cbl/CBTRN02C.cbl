@@ -246,7 +246,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR OPENING DALYTRAN'                                 
                MOVE DALYTRAN-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -264,7 +264,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR OPENING TRANSACTION FILE'                         
                MOVE TRANFILE-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -283,7 +283,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR OPENING CROSS REF FILE'                           
                MOVE XREFFILE-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -301,7 +301,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR OPENING DALY REJECTS FILE'                        
                MOVE DALYREJS-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -319,7 +319,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR OPENING ACCOUNT MASTER FILE'                      
                MOVE ACCTFILE-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -337,7 +337,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR OPENING TRANSACTION BALANCE FILE'                 
                MOVE TCATBALF-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -362,7 +362,7 @@
                ELSE                                                             
                    DISPLAY 'ERROR READING DALYTRAN FILE'                        
                    MOVE DALYTRAN-STATUS TO IO-STATUS                            
-                   PERFORM 9910-DISPLAY-IO-STATUS                               
+                   PERFORM Z-DISPLAY-IO-STATUS                                 
                    PERFORM 9999-ABEND-PROGRAM                                   
                END-IF                                                           
            END-IF                                                               
@@ -403,6 +403,16 @@
                 COMPUTE WS-TEMP-BAL = ACCT-CURR-CYC-CREDIT                      
                                     - ACCT-CURR-CYC-DEBIT                       
                                     + DALYTRAN-AMT                              
+                    ON SIZE ERROR                                               
+                        DISPLAY 'SIZE ERROR IN BALANCE CALCULATION'             
+                        DISPLAY 'ACCT-ID:             ' FD-ACCT-ID              
+                        DISPLAY 'ACCT-CURR-CYC-CREDIT:'                         
+                                       ACCT-CURR-CYC-CREDIT                     
+                        DISPLAY 'ACCT-CURR-CYC-DEBIT: '                         
+                                       ACCT-CURR-CYC-DEBIT                     
+                        DISPLAY 'DALYTRAN-AMT:        ' DALYTRAN-AMT            
+                        MOVE 0 TO WS-TEMP-BAL                                   
+                END-COMPUTE                                                     
                                                                                 
                 IF ACCT-CREDIT-LIMIT >= WS-TEMP-BAL                             
                   CONTINUE                                                      
@@ -459,7 +469,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR WRITING TO REJECTS FILE'                          
                MOVE DALYREJS-STATUS  TO IO-STATUS                               
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -488,7 +498,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR READING TRANSACTION BALANCE FILE'                 
                MOVE TCATBALF-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF.                                                              
                                                                                 
@@ -519,7 +529,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR WRITING TRANSACTION BALANCE FILE'                 
                MOVE TCATBALF-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF.                                                              
       *---------------------------------------------------------------*         
@@ -537,7 +547,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR REWRITING TRANSACTION BALANCE FILE'               
                MOVE TCATBALF-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF.                                                              
                                                                                 
@@ -573,7 +583,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR WRITING TO TRANSACTION FILE'                      
                MOVE TRANFILE-STATUS  TO IO-STATUS                               
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -592,7 +602,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR CLOSING DALYTRAN FILE'                            
                MOVE DALYTRAN-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -610,7 +620,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR CLOSING TRANSACTION FILE'                         
                MOVE TRANFILE-STATUS  TO IO-STATUS                               
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -629,7 +639,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR CLOSING CROSS REF FILE'                           
                MOVE XREFFILE-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -647,7 +657,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR CLOSING DAILY REJECTS FILE'                       
                MOVE XREFFILE-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -665,7 +675,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR CLOSING ACCOUNT FILE'                             
                MOVE ACCTFILE-STATUS  TO IO-STATUS                               
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -684,7 +694,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR CLOSING TRANSACTION BALANCE FILE'                 
                MOVE TCATBALF-STATUS  TO IO-STATUS                               
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -705,26 +715,14 @@
            EXIT.                                                                
                                                                                 
        9999-ABEND-PROGRAM.                                                      
-           DISPLAY 'ABENDING PROGRAM'                                           
+           DISPLAY 'ABENDING PROGRAM CBTRN02C'                                  
+           DISPLAY 'LAST IO-STATUS: ' IO-STATUS                                 
            MOVE 0 TO TIMING                                                     
            MOVE 999 TO ABCODE                                                   
            CALL 'CEE3ABD' USING ABCODE, TIMING.                                 
                                                                                 
       *****************************************************************         
-       9910-DISPLAY-IO-STATUS.                                                  
-           IF  IO-STATUS NOT NUMERIC                                            
-           OR  IO-STAT1 = '9'                                                   
-               MOVE IO-STAT1 TO IO-STATUS-04(1:1)                               
-               MOVE 0        TO TWO-BYTES-BINARY                                
-               MOVE IO-STAT2 TO TWO-BYTES-RIGHT                                 
-               MOVE TWO-BYTES-BINARY TO IO-STATUS-0403                          
-               DISPLAY 'FILE STATUS IS: NNNN' IO-STATUS-04                      
-           ELSE                                                                 
-               MOVE '0000' TO IO-STATUS-04                                      
-               MOVE IO-STATUS TO IO-STATUS-04(3:2)                              
-               DISPLAY 'FILE STATUS IS: NNNN' IO-STATUS-04                      
-           END-IF                                                               
-           EXIT.                                                                
+           COPY CSIOSTAT.                                                       
                                                                                 
       *
       * Ver: CardDemo_v2.0-25-gdb72e6b-235 Date: 2025-04-29 11:01:29 CDT

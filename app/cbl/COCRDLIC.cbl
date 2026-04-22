@@ -280,7 +280,7 @@
       *Common Messages                                                          
        COPY CSMSG01Y.                                                           
       *Abend Variables                                                          
-      *COPY CSMSG02Y.                                                           
+       COPY CSMSG02Y.                                                           
       *Signed on user data                                                      
        COPY CSUSR01Y.                                                           
                                                                                 
@@ -296,6 +296,10 @@
                                                                                 
        PROCEDURE DIVISION.                                                      
        0000-MAIN.                                                               
+                                                                                
+           EXEC CICS HANDLE ABEND                                               
+                     LABEL(ABEND-ROUTINE)                                       
+           END-EXEC                                                             
                                                                                 
            INITIALIZE CC-WORK-AREA                                              
                       WS-MISC-STORAGE                                           
@@ -1453,6 +1457,28 @@
            EXIT                                                                 
            .                                                                    
                                                                                 
+       ABEND-ROUTINE.                                                           
+                                                                                
+           IF ABEND-MSG EQUAL LOW-VALUES                                        
+              MOVE 'UNEXPECTED ABEND OCCURRED.' TO ABEND-MSG                    
+           END-IF                                                               
+                                                                                
+           MOVE LIT-THISPGM       TO ABEND-CULPRIT                              
+                                                                                
+           EXEC CICS SEND                                                       
+                            FROM (ABEND-DATA)                                   
+                            LENGTH(LENGTH OF ABEND-DATA)                        
+                            NOHANDLE                                            
+           END-EXEC                                                             
+                                                                                
+           EXEC CICS HANDLE ABEND                                               
+                CANCEL                                                          
+           END-EXEC                                                             
+                                                                                
+           EXEC CICS ABEND                                                      
+                ABCODE('9999')                                                  
+           END-EXEC                                                             
+           .                                                                    
                                                                                 
       *
       * Ver: CardDemo_v1.0-15-g27d6c6f-68 Date: 2022-07-19 23:12:33 CDT

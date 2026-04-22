@@ -152,26 +152,14 @@
            EXIT.
 
        Z-ABEND-PROGRAM.
-           DISPLAY 'ABENDING PROGRAM'
+           DISPLAY 'ABENDING PROGRAM CBCUS01C'
+           DISPLAY 'LAST IO-STATUS: ' IO-STATUS
            MOVE 0 TO TIMING
            MOVE 999 TO ABCODE
            CALL 'CEE3ABD' USING ABCODE, TIMING.
 
       *****************************************************************
-       Z-DISPLAY-IO-STATUS.
-           IF  IO-STATUS NOT NUMERIC
-           OR  IO-STAT1 = '9'
-               MOVE IO-STAT1 TO IO-STATUS-04(1:1)
-               MOVE 0        TO TWO-BYTES-BINARY
-               MOVE IO-STAT2 TO TWO-BYTES-RIGHT
-               MOVE TWO-BYTES-BINARY TO IO-STATUS-0403
-               DISPLAY 'FILE STATUS IS: NNNN' IO-STATUS-04 
-           ELSE
-               MOVE '0000' TO IO-STATUS-04
-               MOVE IO-STATUS TO IO-STATUS-04(3:2)
-               DISPLAY 'FILE STATUS IS: NNNN' IO-STATUS-04 
-           END-IF
-           EXIT.
+           COPY CSIOSTAT.
 
       *
       * Ver: CardDemo_v2.0-25-gdb72e6b-235 Date: 2025-04-29 11:01:28 CDT
