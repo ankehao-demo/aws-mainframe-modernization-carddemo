@@ -237,7 +237,7 @@
               ELSE                                                              
                  DISPLAY 'ERROR READING DATEPARM FILE'                          
                  MOVE DATEPARM-STATUS TO IO-STATUS                              
-                 PERFORM 9910-DISPLAY-IO-STATUS                                 
+                 PERFORM Z-DISPLAY-IO-STATUS                                   
                  PERFORM 9999-ABEND-PROGRAM                                     
               END-IF                                                            
            .                                                                    
@@ -265,7 +265,7 @@
               ELSE                                                              
                  DISPLAY 'ERROR READING TRANSACTION FILE'                       
                  MOVE TRANFILE-STATUS TO IO-STATUS                              
-                 PERFORM 9910-DISPLAY-IO-STATUS                                 
+                 PERFORM Z-DISPLAY-IO-STATUS                                   
                  PERFORM 9999-ABEND-PROGRAM                                     
               END-IF                                                            
            END-IF                                                               
@@ -353,7 +353,7 @@
            ELSE                                                                 
               DISPLAY 'ERROR WRITING REPTFILE'                                  
               MOVE TRANREPT-STATUS TO IO-STATUS                                 
-              PERFORM 9910-DISPLAY-IO-STATUS                                    
+              PERFORM Z-DISPLAY-IO-STATUS                                      
               PERFORM 9999-ABEND-PROGRAM                                        
            END-IF                                                               
            EXIT.                                                                
@@ -386,7 +386,7 @@
            ELSE                                                                 
               DISPLAY 'ERROR OPENING TRANFILE'                                  
               MOVE TRANFILE-STATUS TO IO-STATUS                                 
-              PERFORM 9910-DISPLAY-IO-STATUS                                    
+              PERFORM Z-DISPLAY-IO-STATUS                                      
               PERFORM 9999-ABEND-PROGRAM                                        
            END-IF                                                               
            EXIT.                                                                
@@ -404,7 +404,7 @@
            ELSE                                                                 
               DISPLAY 'ERROR OPENING REPTFILE'                                  
               MOVE TRANREPT-STATUS TO IO-STATUS                                 
-              PERFORM 9910-DISPLAY-IO-STATUS                                    
+              PERFORM Z-DISPLAY-IO-STATUS                                      
               PERFORM 9999-ABEND-PROGRAM                                        
            END-IF                                                               
            EXIT.                                                                
@@ -422,7 +422,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR OPENING CROSS REF FILE'                           
                MOVE CARDXREF-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -440,7 +440,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR OPENING TRANSACTION TYPE FILE'                    
                MOVE TRANTYPE-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -458,7 +458,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR OPENING TRANSACTION CATG FILE'                    
                MOVE TRANCATG-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -476,7 +476,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR OPENING DATE PARM FILE'                           
                MOVE DATEPARM-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -486,7 +486,7 @@
               INVALID KEY                                                       
                  DISPLAY 'INVALID CARD NUMBER : '  FD-XREF-CARD-NUM             
                  MOVE 23 TO IO-STATUS                                           
-                 PERFORM 9910-DISPLAY-IO-STATUS                                 
+                 PERFORM Z-DISPLAY-IO-STATUS                                   
                  PERFORM 9999-ABEND-PROGRAM                                     
            END-READ                                                             
            EXIT.                                                                
@@ -496,7 +496,7 @@
               INVALID KEY                                                       
                  DISPLAY 'INVALID TRANSACTION TYPE : '  FD-TRAN-TYPE            
                  MOVE 23 TO IO-STATUS                                           
-                 PERFORM 9910-DISPLAY-IO-STATUS                                 
+                 PERFORM Z-DISPLAY-IO-STATUS                                   
                  PERFORM 9999-ABEND-PROGRAM                                     
            END-READ                                                             
            EXIT.                                                                
@@ -506,7 +506,7 @@
               INVALID KEY                                                       
                  DISPLAY 'INVALID TRAN CATG KEY : '  FD-TRAN-CAT-KEY            
                  MOVE 23 TO IO-STATUS                                           
-                 PERFORM 9910-DISPLAY-IO-STATUS                                 
+                 PERFORM Z-DISPLAY-IO-STATUS                                   
                  PERFORM 9999-ABEND-PROGRAM                                     
            END-READ                                                             
            EXIT.                                                                
@@ -524,7 +524,7 @@
            ELSE                                                                 
               DISPLAY 'ERROR CLOSING POSTED TRANSACTION FILE'                   
               MOVE TRANFILE-STATUS TO IO-STATUS                                 
-              PERFORM 9910-DISPLAY-IO-STATUS                                    
+              PERFORM Z-DISPLAY-IO-STATUS                                      
               PERFORM 9999-ABEND-PROGRAM                                        
            END-IF                                                               
            EXIT.                                                                
@@ -542,7 +542,7 @@
            ELSE                                                                 
               DISPLAY 'ERROR CLOSING REPORT FILE'                               
               MOVE TRANREPT-STATUS TO IO-STATUS                                 
-              PERFORM 9910-DISPLAY-IO-STATUS                                    
+              PERFORM Z-DISPLAY-IO-STATUS                                      
               PERFORM 9999-ABEND-PROGRAM                                        
            END-IF                                                               
            EXIT.                                                                
@@ -561,7 +561,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR CLOSING CROSS REF FILE'                           
                MOVE CARDXREF-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -579,7 +579,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR CLOSING TRANSACTION TYPE FILE'                    
                MOVE TRANTYPE-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -597,7 +597,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR CLOSING TRANSACTION CATG FILE'                    
                MOVE TRANCATG-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -615,7 +615,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR CLOSING DATE PARM FILE'                           
                MOVE DATEPARM-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -624,26 +624,14 @@
                                                                                 
                                                                                 
        9999-ABEND-PROGRAM.                                                      
-           DISPLAY 'ABENDING PROGRAM'                                           
+           DISPLAY 'ABENDING PROGRAM CBTRN03C'                                  
+           DISPLAY 'LAST IO-STATUS: ' IO-STATUS                                 
            MOVE 0 TO TIMING                                                     
            MOVE 999 TO ABCODE                                                   
            CALL 'CEE3ABD' USING ABCODE, TIMING.                                 
                                                                                 
       *****************************************************************         
-       9910-DISPLAY-IO-STATUS.                                                  
-           IF IO-STATUS NOT NUMERIC                                             
-              OR IO-STAT1 = '9'                                                 
-              MOVE IO-STAT1 TO IO-STATUS-04(1:1)                                
-              MOVE 0 TO TWO-BYTES-BINARY                                        
-              MOVE IO-STAT2 TO TWO-BYTES-RIGHT                                  
-              MOVE TWO-BYTES-BINARY TO IO-STATUS-0403                           
-              DISPLAY 'FILE STATUS IS: NNNN' IO-STATUS-04                       
-           ELSE                                                                 
-              MOVE '0000' TO IO-STATUS-04                                       
-              MOVE IO-STATUS TO IO-STATUS-04(3:2)                               
-              DISPLAY 'FILE STATUS IS: NNNN' IO-STATUS-04                       
-           END-IF                                                               
-           EXIT.                                                                
+           COPY CSIOSTAT.                                                       
       *
       * Ver: CardDemo_v2.0-25-gdb72e6b-235 Date: 2025-04-29 11:01:29 CDT
       *

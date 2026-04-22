@@ -244,7 +244,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR OPENING TRANSACTION CATEGORY BALANCE'             
                MOVE TCATBALF-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -262,7 +262,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR OPENING CROSS REF FILE'   XREFFILE-STATUS         
                MOVE XREFFILE-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -280,7 +280,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR OPENING DALY REJECTS FILE'                        
                MOVE DISCGRP-STATUS TO IO-STATUS                                 
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -299,7 +299,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR OPENING ACCOUNT MASTER FILE'                      
                MOVE ACCTFILE-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -317,7 +317,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR OPENING TRANSACTION FILE'                         
                MOVE TRANFILE-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -341,7 +341,7 @@
                ELSE                                                             
                    DISPLAY 'ERROR READING TRANSACTION CATEGORY FILE'            
                    MOVE TCATBALF-STATUS TO IO-STATUS                            
-                   PERFORM 9910-DISPLAY-IO-STATUS                               
+                   PERFORM Z-DISPLAY-IO-STATUS                                 
                    PERFORM 9999-ABEND-PROGRAM                                   
                END-IF                                                           
            END-IF                                                               
@@ -364,7 +364,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR RE-WRITING ACCOUNT FILE'                          
                MOVE ACCTFILE-STATUS  TO IO-STATUS                               
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -385,7 +385,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR READING ACCOUNT FILE'                             
                MOVE ACCTFILE-STATUS  TO IO-STATUS                               
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -407,7 +407,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR READING XREF FILE'                                
                MOVE XREFFILE-STATUS  TO IO-STATUS                               
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -430,7 +430,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR READING DISCLOSURE GROUP FILE'                    
                MOVE DISCGRP-STATUS  TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            IF  DISCGRP-STATUS  = '23'                                           
@@ -454,7 +454,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR READING DEFAULT DISCLOSURE GROUP'                 
                MOVE DISCGRP-STATUS  TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -463,6 +463,13 @@
                                                                                 
            COMPUTE WS-MONTHLY-INT                                               
             = ( TRAN-CAT-BAL * DIS-INT-RATE) / 1200                             
+               ON SIZE ERROR                                                    
+                   DISPLAY 'SIZE ERROR IN INTEREST CALCULATION'                 
+                   DISPLAY 'ACCT-ID:      ' ACCT-ID                             
+                   DISPLAY 'TRAN-CAT-BAL: ' TRAN-CAT-BAL                        
+                   DISPLAY 'DIS-INT-RATE: ' DIS-INT-RATE                        
+                   MOVE 0 TO WS-MONTHLY-INT                                     
+           END-COMPUTE                                                          
                                                                                 
            ADD WS-MONTHLY-INT  TO WS-TOTAL-INT                                  
            PERFORM 1300-B-WRITE-TX.                                             
@@ -509,7 +516,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR WRITING TRANSACTION RECORD'                       
                MOVE TRANFILE-STATUS   TO IO-STATUS                              
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -532,7 +539,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR CLOSING TRANSACTION BALANCE FILE'                 
                MOVE TCATBALF-STATUS  TO IO-STATUS                               
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -551,7 +558,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR CLOSING CROSS REF FILE'                           
                MOVE XREFFILE-STATUS TO IO-STATUS                                
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -569,7 +576,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR CLOSING DISCLOSURE GROUP FILE'                    
                MOVE DISCGRP-STATUS TO IO-STATUS                                 
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -587,7 +594,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR CLOSING ACCOUNT FILE'                             
                MOVE ACCTFILE-STATUS  TO IO-STATUS                               
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -605,7 +612,7 @@
            ELSE                                                                 
                DISPLAY 'ERROR CLOSING TRANSACTION FILE'                         
                MOVE TRANFILE-STATUS  TO IO-STATUS                               
-               PERFORM 9910-DISPLAY-IO-STATUS                                   
+               PERFORM Z-DISPLAY-IO-STATUS                                     
                PERFORM 9999-ABEND-PROGRAM                                       
            END-IF                                                               
            EXIT.                                                                
@@ -626,26 +633,14 @@
            EXIT.                                                                
                                                                                 
        9999-ABEND-PROGRAM.                                                      
-           DISPLAY 'ABENDING PROGRAM'                                           
+           DISPLAY 'ABENDING PROGRAM CBACT04C'                                  
+           DISPLAY 'LAST IO-STATUS: ' IO-STATUS                                 
            MOVE 0 TO TIMING                                                     
            MOVE 999 TO ABCODE                                                   
            CALL 'CEE3ABD' USING ABCODE, TIMING.                                 
                                                                                 
       *****************************************************************         
-       9910-DISPLAY-IO-STATUS.                                                  
-           IF  IO-STATUS NOT NUMERIC                                            
-           OR  IO-STAT1 = '9'                                                   
-               MOVE IO-STAT1 TO IO-STATUS-04(1:1)                               
-               MOVE 0        TO TWO-BYTES-BINARY                                
-               MOVE IO-STAT2 TO TWO-BYTES-RIGHT                                 
-               MOVE TWO-BYTES-BINARY TO IO-STATUS-0403                          
-               DISPLAY 'FILE STATUS IS: NNNN' IO-STATUS-04                      
-           ELSE                                                                 
-               MOVE '0000' TO IO-STATUS-04                                      
-               MOVE IO-STATUS TO IO-STATUS-04(3:2)                              
-               DISPLAY 'FILE STATUS IS: NNNN' IO-STATUS-04                      
-           END-IF                                                               
-           EXIT.                                                                
+           COPY CSIOSTAT.                                                       
                                                                                 
       *
       * Ver: CardDemo_v2.0-25-gdb72e6b-235 Date: 2025-04-29 11:01:28 CDT

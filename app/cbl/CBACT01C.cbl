@@ -191,7 +191,7 @@
                ELSE
                    DISPLAY 'ERROR READING ACCOUNT FILE'
                    MOVE ACCTFILE-STATUS TO IO-STATUS
-                   PERFORM 9910-DISPLAY-IO-STATUS
+                   PERFORM Z-DISPLAY-IO-STATUS  
                    PERFORM 9999-ABEND-PROGRAM
                END-IF
            END-IF
@@ -245,7 +245,7 @@
            IF OUTFILE-STATUS NOT = '00' AND OUTFILE-STATUS NOT = '10'
               DISPLAY 'ACCOUNT FILE WRITE STATUS IS:'  OUTFILE-STATUS
               MOVE OUTFILE-STATUS  TO IO-STATUS
-              PERFORM 9910-DISPLAY-IO-STATUS
+              PERFORM Z-DISPLAY-IO-STATUS  
               PERFORM 9999-ABEND-PROGRAM
            END-IF.
            EXIT.
@@ -268,7 +268,7 @@
               DISPLAY 'ACCOUNT FILE WRITE STATUS IS:'
                                         ARRYFILE-STATUS
               MOVE ARRYFILE-STATUS TO IO-STATUS
-              PERFORM 9910-DISPLAY-IO-STATUS
+              PERFORM Z-DISPLAY-IO-STATUS  
               PERFORM 9999-ABEND-PROGRAM
            END-IF.
            EXIT.
@@ -294,7 +294,7 @@
               DISPLAY 'ACCOUNT FILE WRITE STATUS IS:'
                                         VBRCFILE-STATUS
               MOVE VBRCFILE-STATUS TO IO-STATUS
-              PERFORM 9910-DISPLAY-IO-STATUS
+              PERFORM Z-DISPLAY-IO-STATUS  
               PERFORM 9999-ABEND-PROGRAM
            END-IF.
            EXIT.
@@ -309,7 +309,7 @@
               DISPLAY 'ACCOUNT FILE WRITE STATUS IS:'
                                         VBRCFILE-STATUS
               MOVE VBRCFILE-STATUS TO IO-STATUS
-              PERFORM 9910-DISPLAY-IO-STATUS
+              PERFORM Z-DISPLAY-IO-STATUS  
               PERFORM 9999-ABEND-PROGRAM
            END-IF.
            EXIT.
@@ -327,7 +327,7 @@
            ELSE
                DISPLAY 'ERROR OPENING ACCTFILE'
                MOVE ACCTFILE-STATUS TO IO-STATUS
-               PERFORM 9910-DISPLAY-IO-STATUS
+               PERFORM Z-DISPLAY-IO-STATUS  
                PERFORM 9999-ABEND-PROGRAM
            END-IF
            EXIT.
@@ -344,7 +344,7 @@
            ELSE
                DISPLAY 'ERROR OPENING OUTFILE'  OUTFILE-STATUS
                MOVE  OUTFILE-STATUS TO IO-STATUS
-               PERFORM 9910-DISPLAY-IO-STATUS
+               PERFORM Z-DISPLAY-IO-STATUS  
                PERFORM 9999-ABEND-PROGRAM
            END-IF
            EXIT.
@@ -362,7 +362,7 @@
            ELSE
                DISPLAY 'ERROR OPENING ARRAYFILE'  ARRYFILE-STATUS
                MOVE  ARRYFILE-STATUS TO IO-STATUS
-               PERFORM 9910-DISPLAY-IO-STATUS
+               PERFORM Z-DISPLAY-IO-STATUS  
                PERFORM 9999-ABEND-PROGRAM
            END-IF
            EXIT.
@@ -380,7 +380,7 @@
            ELSE
                DISPLAY 'ERROR OPENING VBRC FILE'  VBRCFILE-STATUS
                MOVE  VBRCFILE-STATUS TO IO-STATUS
-               PERFORM 9910-DISPLAY-IO-STATUS
+               PERFORM Z-DISPLAY-IO-STATUS  
                PERFORM 9999-ABEND-PROGRAM
            END-IF
            EXIT.
@@ -398,32 +398,20 @@
            ELSE
                DISPLAY 'ERROR CLOSING ACCOUNT FILE'
                MOVE ACCTFILE-STATUS TO IO-STATUS
-               PERFORM 9910-DISPLAY-IO-STATUS
+               PERFORM Z-DISPLAY-IO-STATUS  
                PERFORM 9999-ABEND-PROGRAM
            END-IF
            EXIT.
 
        9999-ABEND-PROGRAM.
-           DISPLAY 'ABENDING PROGRAM'
+           DISPLAY 'ABENDING PROGRAM CBACT01C'
+           DISPLAY 'LAST IO-STATUS: ' IO-STATUS
            MOVE 0 TO TIMING
            MOVE 999 TO ABCODE
            CALL 'CEE3ABD' USING ABCODE, TIMING.
 
       *****************************************************************
-       9910-DISPLAY-IO-STATUS.
-           IF  IO-STATUS NOT NUMERIC
-           OR  IO-STAT1 = '9'
-               MOVE IO-STAT1 TO IO-STATUS-04(1:1)
-               MOVE 0        TO TWO-BYTES-BINARY
-               MOVE IO-STAT2 TO TWO-BYTES-RIGHT
-               MOVE TWO-BYTES-BINARY TO IO-STATUS-0403
-               DISPLAY 'FILE STATUS IS: NNNN' IO-STATUS-04
-           ELSE
-               MOVE '0000' TO IO-STATUS-04
-               MOVE IO-STATUS TO IO-STATUS-04(3:2)
-               DISPLAY 'FILE STATUS IS: NNNN' IO-STATUS-04
-           END-IF
-           EXIT.
+           COPY CSIOSTAT.
 
       *
       * Ver: CardDemo_v2.0-25-gdb72e6b-235 Date: 2025-04-29 11:01:27 CDT

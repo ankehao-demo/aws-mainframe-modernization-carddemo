@@ -78,6 +78,8 @@
        COPY COTTL01Y.
        COPY CSDAT01Y.
        COPY CSMSG01Y.
+      *Abend Variables
+       COPY CSMSG02Y.
        COPY CSUSR01Y.
 
        COPY DFHAID.
@@ -96,6 +98,10 @@
       *----------------------------------------------------------------*
        PROCEDURE DIVISION.
        MAIN-PARA.
+
+           EXEC CICS HANDLE ABEND
+                     LABEL(ABEND-ROUTINE)
+           END-EXEC
 
            SET ERR-FLG-OFF TO TRUE
            SET USER-SEC-NOT-EOF TO TRUE
@@ -689,6 +695,29 @@
            EXEC CICS ENDBR
                 DATASET   (WS-USRSEC-FILE)
            END-EXEC.
+
+       ABEND-ROUTINE.
+
+           IF ABEND-MSG EQUAL LOW-VALUES
+              MOVE 'UNEXPECTED ABEND OCCURRED.' TO ABEND-MSG
+           END-IF
+
+           MOVE WS-PGMNAME        TO ABEND-CULPRIT
+
+           EXEC CICS SEND
+                            FROM (ABEND-DATA)
+                            LENGTH(LENGTH OF ABEND-DATA)
+                            NOHANDLE
+           END-EXEC
+
+           EXEC CICS HANDLE ABEND
+                CANCEL
+           END-EXEC
+
+           EXEC CICS ABEND
+                ABCODE('9999')
+           END-EXEC
+           .
       
       *
       * Ver: CardDemo_v1.0-15-g27d6c6f-68 Date: 2022-07-19 23:12:34 CDT

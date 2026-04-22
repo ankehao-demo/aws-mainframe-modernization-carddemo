@@ -142,6 +142,8 @@
        COPY COTTL01Y.
        COPY CSDAT01Y.
        COPY CSMSG01Y.
+      *Abend Variables
+       COPY CSMSG02Y.
 
        COPY CVTRA05Y.
 
@@ -161,6 +163,10 @@
       *----------------------------------------------------------------*
        PROCEDURE DIVISION.
        MAIN-PARA.
+
+           EXEC CICS HANDLE ABEND
+                     LABEL(ABEND-ROUTINE)
+           END-EXEC
 
            SET ERR-FLG-OFF TO TRUE
            SET TRANSACT-NOT-EOF TO TRUE
@@ -327,7 +333,8 @@
                    MOVE WS-NUM-9999      TO EDTYYYYI OF CORPT0AI
 
                    IF SDTMMI OF CORPT0AI IS NOT NUMERIC OR
-                      SDTMMI OF CORPT0AI > '12'
+                      SDTMMI OF CORPT0AI > '12' OR
+                      SDTMMI OF CORPT0AI < '01'
                        MOVE 'Start Date - Not a valid Month...'
                          TO WS-MESSAGE
                        MOVE 'Y'     TO WS-ERR-FLG
@@ -336,7 +343,8 @@
                    END-IF
 
                    IF SDTDDI OF CORPT0AI IS NOT NUMERIC OR
-                      SDTDDI OF CORPT0AI > '31'
+                      SDTDDI OF CORPT0AI > '31' OR
+                      SDTDDI OF CORPT0AI < '01'
                        MOVE 'Start Date - Not a valid Day...'
                          TO WS-MESSAGE
                        MOVE 'Y'     TO WS-ERR-FLG
@@ -353,7 +361,8 @@
                    END-IF
 
                    IF EDTMMI OF CORPT0AI IS NOT NUMERIC OR
-                      EDTMMI OF CORPT0AI > '12'
+                      EDTMMI OF CORPT0AI > '12' OR
+                      EDTMMI OF CORPT0AI < '01'
                        MOVE 'End Date - Not a valid Month...'
                          TO WS-MESSAGE
                        MOVE 'Y'     TO WS-ERR-FLG
@@ -362,7 +371,8 @@
                    END-IF
 
                    IF EDTDDI OF CORPT0AI IS NOT NUMERIC OR
-                      EDTDDI OF CORPT0AI > '31'
+                      EDTDDI OF CORPT0AI > '31' OR
+                      EDTDDI OF CORPT0AI < '01'
                        MOVE 'End Date - Not a valid Day...'
                          TO WS-MESSAGE
                        MOVE 'Y'     TO WS-ERR-FLG
@@ -384,6 +394,15 @@
                    MOVE EDTYYYYI OF CORPT0AI TO WS-END-DATE-YYYY
                    MOVE EDTMMI   OF CORPT0AI TO WS-END-DATE-MM
                    MOVE EDTDDI   OF CORPT0AI TO WS-END-DATE-DD
+
+                   IF NOT ERR-FLG-ON AND
+                      WS-START-DATE > WS-END-DATE
+                       MOVE 'Start Date must not be after End Date...'
+                         TO WS-MESSAGE
+                       MOVE 'Y'      TO WS-ERR-FLG
+                       MOVE -1       TO SDTMML OF CORPT0AI
+                       PERFORM SEND-TRNRPT-SCREEN
+                   END-IF
 
                    MOVE WS-START-DATE        TO CSUTLDTC-DATE
                    MOVE WS-DATE-FORMAT       TO CSUTLDTC-DATE-FORMAT
@@ -644,6 +663,29 @@
                                    EDTYYYYI OF CORPT0AI
                                    CONFIRMI OF CORPT0AI
                                    WS-MESSAGE.
+
+       ABEND-ROUTINE.
+
+           IF ABEND-MSG EQUAL LOW-VALUES
+              MOVE 'UNEXPECTED ABEND OCCURRED.' TO ABEND-MSG
+           END-IF
+
+           MOVE WS-PGMNAME        TO ABEND-CULPRIT
+
+           EXEC CICS SEND
+                            FROM (ABEND-DATA)
+                            LENGTH(LENGTH OF ABEND-DATA)
+                            NOHANDLE
+           END-EXEC
+
+           EXEC CICS HANDLE ABEND
+                CANCEL
+           END-EXEC
+
+           EXEC CICS ABEND
+                ABCODE('9999')
+           END-EXEC
+           .
       *
       * Ver: CardDemo_v1.0-15-g27d6c6f-68 Date: 2022-07-19 23:12:33 CDT
       *
