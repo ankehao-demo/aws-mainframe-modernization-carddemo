@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.carddemo.cardservice.controller.CardControllerTest
--------------------------------------------------------------------------------
-Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.664 s -- in com.carddemo.cardservice.controller.CardControllerTest
