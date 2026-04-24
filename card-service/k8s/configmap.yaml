@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: card-service-config
+  labels:
+    app: card-service
+data:
+  DB_URL: "jdbc:postgresql://postgres-service:5432/carddemo"
+  DB_USERNAME: "carddemo"
+  SPRING_PROFILES_ACTIVE: "default"
+  JAVA_OPTS: "-Xms256m -Xmx512m"
