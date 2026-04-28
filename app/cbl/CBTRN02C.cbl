@@ -189,6 +189,9 @@
         01 WS-FLAGS.                                                            
            05 WS-CREATE-TRANCAT-REC         PIC X(01) VALUE 'N'.                
                                                                                 
+        01 WS-CACHE.                                                            
+           05 WS-LAST-CARD-NUM          PIC X(16) VALUE SPACES.                 
+                                                                                
       *****************************************************************         
        PROCEDURE DIVISION.                                                      
            DISPLAY 'START OF EXECUTION OF PROGRAM CBTRN02C'.                    
@@ -213,6 +216,9 @@
                      ELSE                                                       
                        ADD 1 TO WS-REJECT-COUNT                                 
                        PERFORM 2500-WRITE-REJECT-REC                            
+                       IF WS-VALIDATION-FAIL-REASON = 100                       
+                          MOVE SPACES TO WS-LAST-CARD-NUM                       
+                       END-IF                                                   
                      END-IF                                                     
                    END-IF                                                       
                END-IF                                                           
@@ -378,17 +384,19 @@
            EXIT.                                                                
                                                                                 
        1500-A-LOOKUP-XREF.                                                      
-      *    DISPLAY 'CARD NUMBER: ' DALYTRAN-CARD-NUM                            
-           MOVE DALYTRAN-CARD-NUM TO FD-XREF-CARD-NUM                           
-           READ XREF-FILE INTO CARD-XREF-RECORD                                 
-              INVALID KEY                                                       
-                MOVE 100 TO WS-VALIDATION-FAIL-REASON                           
-                MOVE 'INVALID CARD NUMBER FOUND'                                
-                  TO WS-VALIDATION-FAIL-REASON-DESC                             
-              NOT INVALID KEY                                                   
-      *           DISPLAY 'ACCOUNT RECORD FOUND'                                
-                  CONTINUE                                                      
-           END-READ                                                             
+           IF DALYTRAN-CARD-NUM = WS-LAST-CARD-NUM                              
+              CONTINUE                                                          
+           ELSE                                                                 
+              MOVE DALYTRAN-CARD-NUM TO FD-XREF-CARD-NUM                        
+              READ XREF-FILE INTO CARD-XREF-RECORD                              
+                 INVALID KEY                                                    
+                   MOVE 100 TO WS-VALIDATION-FAIL-REASON                        
+                   MOVE 'INVALID CARD NUMBER FOUND'                             
+                     TO WS-VALIDATION-FAIL-REASON-DESC                          
+                 NOT INVALID KEY                                                
+                   MOVE DALYTRAN-CARD-NUM TO WS-LAST-CARD-NUM                   
+              END-READ                                                          
+           END-IF                                                               
            EXIT.                                                                
        1500-B-LOOKUP-ACCT.                                                      
            MOVE XREF-ACCT-ID TO FD-ACCT-ID                                      

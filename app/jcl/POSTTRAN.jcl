@@ -20,6 +20,22 @@
 //* Process and load daily transaction file and create transaction              
 //* category balance and update transaction master vsam                         
 //* *******************************************************************         
+//* *******************************************************************         
+//* Sort daily transaction file by card number for XREF cache          
+//* efficiency in CBTRN02C                                             
+//* *******************************************************************         
+//STEP10 EXEC PGM=SORT                                                          
+//SORTIN   DD DISP=SHR,                                                         
+//         DSN=AWS.M2.CARDDEMO.DALYTRAN.PS                                      
+//SORTOUT  DD DISP=(NEW,PASS,DELETE),                                           
+//         UNIT=SYSDA,                                                          
+//         DCB=(RECFM=F,LRECL=350,BLKSIZE=0),                                  
+//         SPACE=(CYL,(5,5),RLSE),                                              
+//         DSN=&&SORTDALY                                                       
+//SYSOUT   DD SYSOUT=*                                                          
+//SYSIN    DD *                                                                 
+  SORT FIELDS=(263,16,CH,A)                                                     
+/*                                                                              
 //STEP15 EXEC PGM=CBTRN02C                                                      
 //STEPLIB  DD DISP=SHR,                                                         
 //            DSN=AWS.M2.CARDDEMO.LOADLIB                                       
@@ -28,7 +44,7 @@
 //TRANFILE DD DISP=SHR,                                                         
 //         DSN=AWS.M2.CARDDEMO.TRANSACT.VSAM.KSDS                               
 //DALYTRAN DD DISP=SHR,                                                         
-//         DSN=AWS.M2.CARDDEMO.DALYTRAN.PS                                      
+//         DSN=&&SORTDALY                                      
 //XREFFILE DD DISP=SHR,                                                         
 //         DSN=AWS.M2.CARDDEMO.CARDXREF.VSAM.KSDS                               
 //DALYREJS DD DISP=(NEW,CATLG,DELETE),                                          
