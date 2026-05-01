@@ -22,6 +22,7 @@
         <module>carddemo-common</module>
         <module>carddemo-auth</module>
         <module>carddemo-account</module>
+        <module>carddemo-card</module>
         <module>carddemo-transaction</module>
         <module>carddemo-batch</module>
         <module>carddemo-admin</module>
@@ -55,6 +56,11 @@
             <dependency>
                 <groupId>com.aws.carddemo</groupId>
                 <artifactId>carddemo-account</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aws.carddemo</groupId>
+                <artifactId>carddemo-card</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
