@@ -1,0 +1,3 @@
+-- Placeholder for seed data migration.
+-- Actual data seeding will be performed by the carddemo-migration module
+-- which reads the fixed-width ASCII data files from app/data/ASCII/.
