@@ -131,6 +131,20 @@
 | CU02 | COUSR02C | User update (admin) |
 | CU03 | COUSR03C | User delete (admin) |
 
+## Java Module Mapping
+
+| Java Module | COBOL Programs | CICS TxnIDs | VSAM Files | Description |
+|-------------|---------------|-------------|------------|-------------|
+| carddemo-auth | COSGN00C | CC00 | USRSEC | Sign-on and authentication |
+| carddemo-account | COACTVWC, COACTUPC | CAVW, CAUP | ACCTDAT, CUSTDAT, CARDDAT, CARDAIX | Account view and update |
+| carddemo-card | COCRDLIC, COCRDSLC, COCRDUPC | CCLI, CCDL, CCUP | CARDDAT, CARDAIX, CUSTDAT | Card list, detail view, and update |
+| carddemo-transaction | COTRN00C, COTRN01C, COTRN02C | CT00, CT01, CT02 | TRANSACT, ACCTDAT, CCXREF | Transaction list, view, and add |
+| carddemo-admin | COADM01C, COUSR00C-03C, COTRTLIC, COTRTUPC | CA00, CU00-CU03 | USRSEC | Admin menu and user management |
+| carddemo-batch | CBACT01C-04C, CBCUS01C, CBTRN01C-03C, CBSTM03A/B | — | All batch files | Batch processing (interest, statements, posting) |
+| carddemo-common | — | — | — | Shared entities, repositories, DTOs, exceptions |
+| carddemo-web | COMEN01C (routing only) | CM00 | — | Web application entrypoint and configuration |
+| carddemo-migration | — | — | — | EBCDIC/ASCII data migration utility |
+
 ## Program Call Graph
 
 ```
